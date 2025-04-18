@@ -1,188 +1,415 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <link rel="stylesheet" href="styles.css">
-
-        <!-- =====BOX ICONS===== -->
-        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
-
-        <title>Gameshmani Borwells</title>
-    </head>
-    <body>
-        <!--===== HEADER =====-->
-        <header class="l-header">
-            <nav class="nav bd-grid">
-                <div>
-                    <a href="#" class="nav__logo">Gameshmani Borewells</a>
-                </div>
-
-                <div class="nav__menu" id="nav-menu">
-                    <ul class="nav__list">
-                        <li class="nav__item"><a href="#home" class="nav__link active-link">Home</a></li>
-                        <li class="nav__item"><a href="#services" class="nav__link">Services</a></li>
-                        <li class="nav__item"><a href="#about" class="nav__link">About</a></li>
-                        <li class="nav__item"><a href="#work" class="nav__link">Work</a></li>
-                        <li class="nav__item"><a href="#contact" class="nav__link">Contact</a></li>
-                    </ul>
-                </div>
-
-                <div class="nav__toggle" id="nav-toggle">
-                    <i class='bx bx-menu'></i>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganeshmani Borwells - Trusted Borewell Services</title>
+    <link rel="stylesheet" href="Style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header id="header">
+        <div class="container">
+            <div class="logo">
+                <h1>Ganeshmani Borwells</h1>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#" id="admin-login-btn">Admin Login</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
                 </div>
             </nav>
-        </header>
+        </div>
+    </header>
 
-        <main class="l-main" id="home">
-            <!--===== HOME =====-->
-            <div class="hero-container">
-                <div class="hero-image">
-                    <img src="img/borewell-truck-png-1.png" alt="Borewell Drilling Truck">
-                </div>
-                <div class="hero-content">
-                    <h1>Welcome To Gameshmani Borewells</h1>
-                    <p>Gameshmani Borewell is capable of drilling borewell and Tubewell based on the site requirements as per dimension 43/4 inch, 6 inch, 6 1/2 Inch, 8 inch, 10 inch, 12 inch borewell throughout India</p>
-                    <p>Gameshmani Borewells is recognized as one of the most leading and reliable multi disciplinary drilling contractors based in Kollam, Kerala. Having many years of experience in this business, the company has been offering best solutions for all kinds of water related problems. Our highly experienced drilling operators and dedicated technical personnel are integral part of the company who have perfection in borewell drilling.</p>
-
-                    <a href="#" class="read-more-btn">Read More</a>
-                </div>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 data-aos="fade-up">Trusted Borewell Drilling Services Since 2000</h1>
+            <p data-aos="fade-up" data-aos-delay="200">Providing clean water solutions with advanced technology and expert service</p>
+            <div class="hero-buttons" data-aos="fade-up" data-aos-delay="400">
+                <a href="#contact" class="btn btn-primary">Book a Service</a>
+                <a href="#services" class="btn btn-secondary">See Services</a>
             </div>
-        
-           
+        </div>
+    </section>
 
-            <!--===== services =====-->
-            <div class="services-container" id="services">
-                <h1 class="section-title">Services</h1>
-                <p class="subtitle">We Provide Best Borewell Service in through out Kerala!</p>
-                <p>We under take all kind of plumbing work with reasonable price as ur requirements</p>
-                
-                <div class="services-grid">
-                    <div class="service-item">
-                        <div class="service-icon">🚜</div>
-                        <div class="service-title">Borewell Drilling</div>
-                        <p class="service-description">India being an agrarian country, our farmers depend mainly on groundwater for irrigation.</p>
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-aos="fade-up">About Us</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="about-content">
+                <div class="about-text" data-aos="fade-right">
+                    <h3>Your Trusted Partner in Water Solutions</h3>
+                    <p>With over 20 years of experience in the industry, DeepWell has been providing reliable borewell drilling and water solutions to residential, commercial, and agricultural sectors.</p>
+                    <p>Our mission is to deliver sustainable water access using cutting-edge technology and environmentally friendly practices. We take pride in our skilled team of professionals who ensure quality service with every project.</p>
+                </div>
+                <div class="about-stats" data-aos="fade-left">
+                    <div class="stat-box">
+                        <i class="fas fa-project-diagram"></i>
+                        <h3><span class="counter" data-target="1500">0</span>+</h3>
+                        <p>Projects Completed</p>
                     </div>
-                    <div class="service-item">
-                        <div class="service-icon">🚛</div>
-                        <div class="service-title">Tubewell Drilling</div>
-                        <p class="service-description">Our firm is involved in providing qualitative Tubewell Drilling service to our prestigious clients.</p>
+                    <div class="stat-box">
+                        <i class="fas fa-users"></i>
+                        <h3><span class="counter" data-target="50">0</span>+</h3>
+                        <p>Expert Team Members</p>
                     </div>
-                    <div class="service-item">
-                        <div class="service-icon">🏗️</div>
-                        <div class="service-title">Calix / Rotary Boring Method</div>
-                        <p class="service-description">This method is generally called rotary boring method. This method can be successfully used for rock as well as unconsolidated formation.</p>
+                    <div class="stat-box">
+                        <i class="fas fa-award"></i>
+                        <h3><span class="counter" data-target="23">0</span></h3>
+                        <p>Years of Experience</p>
                     </div>
-                    <div class="service-item">
-                        <div class="service-icon">🚰</div>
-                        <div class="service-title">Flushing/Cleaning</div>
-                        <p class="service-description">We are one of the leading manufacturers of PRECISION cleaning systems, including flushing cleaners. We recommend clean/flush your bore well on every 5 year to retain the yield & quality of water.</p>
-                    </div>
-                    <div class="service-item">
-                        <div class="service-icon">🔎</div>
-                        <div class="service-title">What is difference between Tubewell and Borewell</div>
-                        <p class="service-description">A bore well is drilled with casing pipe put only up to the soil-rock boundary and this is done normally for shallow depths in hard rock or in crystalline rock.</p>
-                    </div>
-                    <div class="service-item">
-                        <div class="service-icon">🎯</div>
-                        <div class="service-title">Our Motto</div>
-                        <p class="service-description">100% Assured Success The impossible is made possible here To deliver high level of customer satisfaction by providing quality output and real value for money Work towards exceeding customers</p>
+                    <div class="stat-box">
+                        <i class="fas fa-smile"></i>
+                        <h3><span class="counter" data-target="98">0</span>%</h3>
+                        <p>Customer Satisfaction</p>
                     </div>
                 </div>
             </div>
-      <!--how to start-->
-   
+        </div>
+    </section>
 
-      <div class="container">
-        <section class="why-choose-us">
-            <h2>How to Work</h2>
-            <h3>Three Step to get Started</h3>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-icon">☎️</div>
-                    <h4>Contact us</h4>
-                    <p>Our rigs and vehicles are well maintained to offer productive service in most competitive drilling field.</p>
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-aos="fade-up">Our Services</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" data-aos="zoom-in">
+                    <div class="service-icon">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <h3>Borewell Drilling</h3>
+                    <p>Professional drilling services with advanced machinery for residential and commercial properties.</p>
                 </div>
-                <div class="step">
-                    <div class="step-icon">🤝</div>
-                    <h4>Booking </h4>
-                    <p>Specialized in Water Well Drilling, Ground Water Survey, Geotech Drilling and Exploration Drilling sectors across Kollam.</p>
+                <div class="service-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="service-icon">
+                        <i class="fas fa-broom"></i>
+                    </div>
+                    <h3>Borewell Cleaning</h3>
+                    <p>Comprehensive cleaning and maintenance to ensure optimal water flow and quality.</p>
                 </div>
-                <div class="step">
-                    <div class="step-icon">🚒</div>
-                    <h4>Work start</h4>
-                    <p>We value our staff. This is one of the quality measurement of our company. By communicating with our team you can determine.</p>
+                <div class="service-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="service-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Hydrogeological Survey</h3>
+                    <p>Scientific assessment to identify the best locations for borewell drilling with high success rates.</p>
+                </div>
+                <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="service-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>Pipe & PVC Fittings</h3>
+                    <p>Quality installation of pipes and fittings with durable materials for long-lasting performance.</p>
+                </div>
+                <div class="service-card" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="service-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3>Pump Installation</h3>
+                    <p>Expert installation and servicing of water pumps for efficient water extraction and distribution.</p>
+                </div>
+                <div class="service-card" data-aos="zoom-in" data-aos-delay="500">
+                    <div class="service-icon">
+                        <i class="fas fa-wrench"></i>
+                    </div>
+                    <h3>Maintenance & Repair</h3>
+                    <p>Regular maintenance and prompt repair services to keep your water systems running smoothly.</p>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
-<!--bar-->
-            <div class="bar">
-                <h1>Interested in Our Borewell Services?</h1>
-                <a href="tel:+919623441444" class="contact-btn">Contact us Now!</a>
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-aos="fade-up">Project Gallery</h2>
+                <div class="underline"></div>
             </div>
-       <!--===== why section =====-->
-
-       <div class="container">
-        <section class="why-choose-us">
-            <h2>Why Choose Us</h2>
-            <h3>Three Step For Started Working Process</h3>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-icon">👨‍🔧</div>
-                    <h4>CAPABILITIES & EQUIPMENT</h4>
-                    <p>Our rigs and vehicles are well maintained to offer productive service in most competitive drilling field.</p>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-aos="fade-up">
+                    <img src="https://i.pinimg.com/736x/da/3b/9a/da3b9a112b5c6ed59415132a40ff2bd8.jpg" alt="Borewell Drilling Project" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3>Residential Drilling</h3>
+                        <p>Borewell installation in urban area</p>
+                    </div>
                 </div>
-                <div class="step">
-                    <div class="step-icon">👍</div>
-                    <h4>GUARANTEE SERVICES</h4>
-                    <p>Specialized in Water Well Drilling, Ground Water Survey, Geotech Drilling and Exploration Drilling sectors across Kollam.</p>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://i.pinimg.com/736x/2e/1c/b6/2e1cb60bfdb5cf25ce3c2576a326d05b.jpg" alt="Commercial Borewell Project" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3>Commercial Project</h3>
+                        <p>Industrial water solution</p>
+                    </div>
                 </div>
-                <div class="step">
-                    <div class="step-icon">👥</div>
-                    <h4>OUR TEAM</h4>
-                    <p>We value our staff. This is one of the quality measurement of our company. By communicating with our team you can determine.</p>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://i.pinimg.com/736x/24/c2/fc/24c2fcde687ccecd245c2d099d21963c.jpg" alt="Pump Installation" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3>Pump Installation</h3>
+                        <p>High-capacity water pump setup</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="300">
+                    <img src="https://i.pinimg.com/736x/c6/8c/10/c68c10c79e806fe07493603f133bf98f.jpg" alt="Borewell Maintenance" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3>Maintenance Work</h3>
+                        <p>Regular servicing of borewell</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="400">
+                    <img src="https://i.pinimg.com/736x/b7/0d/19/b70d19e83a6d2f5c3284b8fd30ffd435.jpg" alt="Agricultural Borewell" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3>Agricultural Project</h3>
+                        <p>Farm irrigation system</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="500">
+                    <img src="https://i.pinimg.com/736x/5c/44/9d/5c449dec0b2255a854dd069665c99034.jpg" alt="Water Testing" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3>Water Quality Testing</h3>
+                        <p>Ensuring safe water supply</p>
+                    </div>
                 </div>
             </div>
-        </section>
-    </div>
+            <div class="video-container" data-aos="zoom-in">
+                <h3>Watch Our Drilling Process</h3>
+                <div class="video-wrapper">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/BIlF7bUl71A?si=-hubJEzzUzWNy0Ms" title="Borewell Drilling Process" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-aos="fade-up">Our Pricing</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="pricing-content">
+                <div class="pricing-cards">
+                    <div class="pricing-card" data-aos="flip-left">
+                        <div class="pricing-header">
+                            <h3>Borewell Drilling</h3>
+                        </div>
+                        <div class="pricing-body">
+                            <ul>
+                                <li><strong>6" Diameter:</strong> ₹250 per foot</li>
+                                <li><strong>7" Diameter:</strong> ₹300 per foot</li>
+                                <li><strong>8" Diameter:</strong> ₹350 per foot</li>
+                                <li><strong>Casing Pipes:</strong> Additional cost</li>
+                                <li><strong>Survey:</strong> ₹5,000 (adjustable with service)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pricing-card" data-aos="flip-left" data-aos-delay="100">
+                        <div class="pricing-header">
+                            <h3>Pipes & Fittings</h3>
+                        </div>
+                        <div class="pricing-body">
+                            <ul>
+                                <li><strong>PVC Pipes:</strong> ₹120-180 per foot</li>
+                                <li><strong>MS Pipes:</strong> ₹200-300 per foot</li>
+                                <li><strong>SS Pipes:</strong> ₹350-500 per foot</li>
+                                <li><strong>Fittings:</strong> Varies by type</li>
+                                <li><strong>Installation:</strong> ₹2,000-5,000</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pricing-card" data-aos="flip-left" data-aos-delay="200">
+                        <div class="pricing-header">
+                            <h3>Pump Installation</h3>
+                        </div>
+                        <div class="pricing-body">
+                            <ul>
+                                <li><strong>1 HP Pump:</strong> ₹15,000-20,000</li>
+                                <li><strong>2 HP Pump:</strong> ₹20,000-25,000</li>
+                                <li><strong>3 HP Pump:</strong> ₹25,000-30,000</li>
+                                <li><strong>5 HP Pump:</strong> ₹30,000-40,000</li>
+                                <li><strong>Installation:</strong> ₹3,000-5,000</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="pricing-note" data-aos="fade-up">
+                    <p>* Prices may vary based on location, depth, and specific requirements.</p>
+                    <p>* Transportation charges applicable beyond 30km radius.</p>
+                    <a href="#" class="btn btn-primary">Download Full Price List (PDF)</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-           
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-aos="fade-up">Contact Us</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info" data-aos="fade-right">
+                    <h3>Get In Touch</h3>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>123 Water Street, Hydro City, State - 560001</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <p>+91 9876543210, +91 8765432109</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>info@deepwell.com</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <p>Mon-Sat: 8:00 AM - 7:00 PM</p>
+                    </div>
+                    <div class="map-container">
+                        <iframe 
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3794.0946467068357!2d75.2170114!3d19.3527314!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bdb695e4eb11491%3A0xee1d13420679a3c3!2sDr.%20Babasaheb%20Ambedkar%20Chowk!5e0!3m2!1sen!2sin!4v1713440537272!5m2!1sen!2sin" 
+  width="100%" 
+  height="400" 
+  style="border:0;" 
+  allowfullscreen="" 
+  loading="lazy" 
+  referrerpolicy="no-referrer-when-downgrade">
+</iframe>
 
-            <!--===== CONTACT =====-->
-            <section class="contact section" id="contact">
-                <h2 class="section-title">Contact</h2>
-
-                <div class="contact__container bd-grid">
-                    <form action="" class="contact__form">
-                        <input type="text" placeholder="Name" class="contact__input">
-                        <input type="mail" placeholder="Email" class="contact__input">
-                        <textarea name="" id="" cols="0" rows="10" class="contact__input"></textarea>
-                        <input type="button" value="Send" class="contact__button button">
+                      
+                    </div>
+                </div>
+                <div class="contact-form" data-aos="fade-left">
+                    <h3>Book a Service</h3>
+                    <form id="bookingForm">
+                        <div class="form-group">
+                            <input type="text" id="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" placeholder="Mobile Number" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="location" placeholder="Your Location" required>
+                        </div>
+                        <div class="form-group">
+                            <select id="service" required>
+                                <option value="" disabled selected>Select Service</option>
+                                <option value="drilling">Borewell Drilling</option>
+                                <option value="cleaning">Borewell Cleaning</option>
+                                <option value="survey">Hydrogeological Survey</option>
+                                <option value="pipes">Pipe & PVC Fittings</option>
+                                <option value="pump">Pump Installation</option>
+                                <option value="maintenance">Maintenance & Repair</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" placeholder="Additional Details" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Request</button>
                     </form>
                 </div>
-            </section>
-        </main>
-
-        <!--===== FOOTER =====-->
-        <footer class="footer">
-            <p class="footer__title">Gameshmani Borewells</p>
-            <div class="footer__social">
-                <a href="#" class="footer__icon"><i class='bx bxl-facebook'></i></a>
-                <a href="#" class="footer__icon"><i class='bx bxl-instagram'></i></a>
-                <a href="#" class="footer__icon"><i class='bx bxl-twitter'></i></a>
             </div>
-            <p class="footer__copy">&#169; Gameshmani Borwells. All rigths reserved</p>
-        </footer>
+        </div>
+    </section>
 
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>DeepWell</h2>
+                    <p>Your trusted partner for water solutions since 2000.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-services">
+                    <h3>Our Services</h3>
+                    <ul>
+                        <li>Borewell Drilling</li>
+                        <li>Borewell Cleaning</li>
+                        <li>Hydrogeological Survey</li>
+                        <li>Pipe & PVC Fittings</li>
+                        <li>Pump Installation</li>
+                        <li>Maintenance & Repair</li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 DeepWell Borewell Services. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-        <!--===== SCROLL REVEAL =====-->
-        <script src="https://unpkg.com/scrollreveal"></script>
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/919876543210?text=I'm%20interested%20in%20your%20borewell%20services" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
-        <!--===== MAIN JS =====-->
-        <script src="main.js"></script>
-    </body>
+    <!-- Scroll to Top Button -->
+    <button id="scrollToTop" class="scroll-top-btn">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Admin Login</h2>
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="script.js"></script>
+</body>
 </html>
