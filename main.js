@@ -1,231 +1,256 @@
-/*===== MENU SHOW =====*/ 
-const showMenu = (toggleId, navId) => {
-    const toggle = document.getElementById(toggleId),
-    nav = document.getElementById(navId);
+// Initialize AOS Animation Library
+AOS.init({
+  duration: 800,
+  easing: "ease",
+  once: true,
+  offset: 100,
+})
 
-    if(toggle && nav) {
-        toggle.addEventListener('click', () => {
-            nav.classList.toggle('show');
-        });
+// Mobile Navigation Toggle
+const hamburger = document.querySelector(".hamburger")
+const navMenu = document.querySelector(".nav-menu")
+
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("active")
+  navMenu.classList.toggle("active")
+})
+
+// Close mobile menu when clicking on a nav link
+document.querySelectorAll(".nav-menu a").forEach((link) => {
+  link.addEventListener("click", () => {
+    hamburger.classList.remove("active")
+    navMenu.classList.remove("active")
+  })
+})
+
+// Active Navigation Link on Scroll
+const sections = document.querySelectorAll("section")
+const navLinks = document.querySelectorAll(".nav-menu a")
+
+window.addEventListener("scroll", () => {
+  let current = ""
+
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop
+    const sectionHeight = section.clientHeight
+
+    if (pageYOffset >= sectionTop - sectionHeight / 3) {
+      current = section.getAttribute("id")
     }
+  })
+
+  navLinks.forEach((link) => {
+    link.classList.remove("active")
+    if (link.getAttribute("href") === `#${current}`) {
+      link.classList.add("active")
+    }
+  })
+})
+
+// Scroll to Top Button
+const scrollTopBtn = document.getElementById("scrollToTop")
+
+window.addEventListener("scroll", () => {
+  if (window.pageYOffset > 300) {
+    scrollTopBtn.style.display = "flex"
+  } else {
+    scrollTopBtn.style.display = "none"
+  }
+})
+
+scrollTopBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  })
+})
+
+// Animated Counter
+const counters = document.querySelectorAll(".counter")
+const speed = 200
+
+function animateCounters() {
+  counters.forEach((counter) => {
+    const target = +counter.dataset.target
+    let count = 0
+
+    const updateCount = () => {
+      const increment = target / speed
+
+      if (count < target) {
+        count += increment
+        counter.innerText = Math.ceil(count)
+        setTimeout(updateCount, 1)
+      } else {
+        counter.innerText = target
+      }
+    }
+
+    updateCount()
+  })
 }
-showMenu('nav-toggle','nav-menu');
 
-/*==================== REMOVE MENU MOBILE ====================*/
-const navLink = document.querySelectorAll('.nav__link');
+// Trigger counter animation when About section is in view
+const aboutSection = document.getElementById("about")
+const aboutObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        animateCounters()
+        aboutObserver.unobserve(entry.target)
+      }
+    })
+  },
+  { threshold: 0.5 },
+)
 
-function linkAction(){
-    const navMenu = document.getElementById('nav-menu');
-    // When we click on each nav__link, we remove the show-menu class
-    navMenu.classList.remove('show');
-}
-navLink.forEach(n => n.addEventListener('click', linkAction));
+aboutObserver.observe(aboutSection)
 
-/*==================== SCROLL SECTIONS ACTIVE LINK ====================*/
-const sections = document.querySelectorAll('section[id]');
+// Gallery Lightbox
+const galleryItems = document.querySelectorAll(".gallery-img")
 
-const scrollActive = () => {
-    const scrollDown = window.scrollY;
+galleryItems.forEach((item) => {
+  item.addEventListener("click", () => {
+    const imgSrc = item.getAttribute("src")
+    const imgAlt = item.getAttribute("alt")
 
-    sections.forEach(current => {
-        const sectionHeight = current.offsetHeight,
-              sectionTop = current.offsetTop - 58,
-              sectionId = current.getAttribute('id'),
-              sectionsClass = document.querySelector('.nav__menu a[href*=' + sectionId + ']');
-        
-        if(scrollDown > sectionTop && scrollDown <= sectionTop + sectionHeight){
-            sectionsClass.classList.add('active-link');
-        } else {
-            sectionsClass.classList.remove('active-link');
-        }                                                    
-    });
-}
-window.addEventListener('scroll', scrollActive);
+    // Create lightbox elements
+    const lightbox = document.createElement("div")
+    lightbox.classList.add("lightbox")
 
-/*===== HEADER SCROLL EFFECT =====*/
-const header = document.querySelector('.l-header');
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
-    }
-});
+    const lightboxContent = document.createElement("div")
+    lightboxContent.classList.add("lightbox-content")
 
-/*===== SCROLL REVEAL ANIMATION =====*/
-// Custom implementation to replace ScrollReveal library
-document.addEventListener('DOMContentLoaded', () => {
-    // Set animation index for staggered animations
-    const navItems = document.querySelectorAll('.nav__item');
-    navItems.forEach((item, index) => {
-        item.style.setProperty('--item-index', index + 1);
-    });
-    
-    const footerIcons = document.querySelectorAll('.footer__icon');
-    footerIcons.forEach((icon, index) => {
-        icon.style.setProperty('--icon-index', index + 1);
-    });
-    
-    // Initialize animation for elements that should animate on page load
-    const heroImage = document.querySelector('.hero-image');
-    const heroContent = document.querySelector('.hero-content');
-    
-    // Intersection Observer for scroll animations
-    const animateOnScroll = (entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    };
-    
-    // Create observer for different animation types
-    const observerOptions = {
-        root: null,
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const fadeInObserver = new IntersectionObserver(animateOnScroll, observerOptions);
-    const slideUpObserver = new IntersectionObserver(animateOnScroll, observerOptions);
-    const zoomInObserver = new IntersectionObserver(animateOnScroll, observerOptions);
-    const slideLeftObserver = new IntersectionObserver(animateOnScroll, observerOptions);
-    const slideRightObserver = new IntersectionObserver(animateOnScroll, observerOptions);
-    
-    // Staggered animation for service items
-    const staggerObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Get all child elements to stagger
-                const children = entry.target.querySelectorAll('.stagger-item');
-                children.forEach((child, index) => {
-                    setTimeout(() => {
-                        child.classList.add('visible');
-                    }, 100 * index);
-                });
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-    
-    // Section titles
-    document.querySelectorAll('.section-title').forEach(title => {
-        fadeInObserver.observe(title);
-    });
-    
-    // Service items
-    document.querySelectorAll('.service-item').forEach(item => {
-        item.classList.add('slide-up');
-        slideUpObserver.observe(item);
-    });
-    
-    // Steps
-    document.querySelectorAll('.step').forEach(step => {
-        step.classList.add('zoom-in');
-        zoomInObserver.observe(step);
-    });
-    
-    // Contact form
-    const contactForm = document.querySelector('.contact__form');
-    if (contactForm) {
-        contactForm.classList.add('fade-in');
-        fadeInObserver.observe(contactForm);
-    }
-    
-    // Contact inputs with staggered animation
-    const contactInputs = document.querySelectorAll('.contact__input');
-    contactInputs.forEach((input, index) => {
-        input.classList.add('stagger-item');
-        input.style.transitionDelay = `${index * 0.1}s`;
-    });
-    
-    if (contactInputs.length > 0) {
-        const contactContainer = document.querySelector('.contact__container');
-        if (contactContainer) {
-            staggerObserver.observe(contactContainer);
-        }
-    }
-    
-    // Services grid with staggered animation
-    const serviceItems = document.querySelectorAll('.service-item');
-    serviceItems.forEach((item, index) => {
-        item.classList.add('stagger-item');
-        item.style.transitionDelay = `${index * 0.1}s`;
-    });
-    
-    if (serviceItems.length > 0) {
-        const servicesGrid = document.querySelector('.services-grid');
-        if (servicesGrid) {
-            staggerObserver.observe(servicesGrid);
-        }
+    const closeBtn = document.createElement("span")
+    closeBtn.classList.add("lightbox-close")
+    closeBtn.innerHTML = "&times;"
+
+    const img = document.createElement("img")
+    img.setAttribute("src", imgSrc)
+    img.setAttribute("alt", imgAlt)
+
+    // Append elements
+    lightboxContent.appendChild(closeBtn)
+    lightboxContent.appendChild(img)
+    lightbox.appendChild(lightboxContent)
+    document.body.appendChild(lightbox)
+
+    // Prevent body scrolling
+    document.body.style.overflow = "hidden"
+
+    // Close lightbox on click
+    lightbox.addEventListener("click", () => {
+      document.body.removeChild(lightbox)
+      document.body.style.overflow = "auto"
+    })
+
+    // Close lightbox on Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && document.querySelector(".lightbox")) {
+        document.body.removeChild(lightbox)
+        document.body.style.overflow = "auto"
+      }
+    })
+  })
+})
+
+// Admin Login Modal
+const adminModal = document.getElementById("adminModal")
+const adminLoginBtn = document.getElementById("admin-login-btn")
+const closeModal = document.querySelector(".close-modal")
+
+adminLoginBtn.addEventListener("click", (e) => {
+  e.preventDefault()
+  adminModal.style.display = "block"
+})
+
+closeModal.addEventListener("click", () => {
+  adminModal.style.display = "none"
+})
+
+window.addEventListener("click", (e) => {
+  if (e.target === adminModal) {
+    adminModal.style.display = "none"
+  }
+})
+
+// Admin Login Form Submission
+const adminLoginForm = document.getElementById("adminLoginForm")
+
+adminLoginForm.addEventListener("submit", (e) => {
+  e.preventDefault()
+
+  const username = document.getElementById("username").value
+  const password = document.getElementById("password").value
+
+  // Simple dummy authentication (for demonstration only)
+  if (username === "admin" && password === "password") {
+    alert("Login successful! Redirecting to admin dashboard...")
+    // In a real application, you would redirect to an admin dashboard
+  } else {
+    alert("Invalid credentials. Please try again.")
+  }
+})
+
+// Contact Form Validation and Submission
+const bookingForm = document.getElementById("bookingForm")
+
+bookingForm.addEventListener("submit", (e) => {
+  e.preventDefault()
+
+  const name = document.getElementById("name").value
+  const phone = document.getElementById("phone").value
+  const location = document.getElementById("location").value
+  const service = document.getElementById("service").value
+  const message = document.getElementById("message").value
+
+  // Validate phone number (simple validation)
+  const phoneRegex = /^\d{10}$/
+  if (!phoneRegex.test(phone)) {
+    alert("Please enter a valid 10-digit mobile number.")
+    return
+  }
+
+  // In a real application, you would send this data to a server
+  alert(`Thank you, ${name}! Your service request has been submitted. We will contact you shortly.`)
+  bookingForm.reset()
+})
+
+// Add CSS for Lightbox
+const lightboxStyle = document.createElement("style")
+lightboxStyle.innerHTML = `
+    .lightbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1200;
     }
     
-    // Add hover effect to buttons
-    const buttons = document.querySelectorAll('.button, .read-more-btn, .contact-btn');
-    buttons.forEach(button => {
-        button.addEventListener('mouseover', function() {
-            this.style.transform = 'translateY(-3px)';
-            this.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.15)';
-        });
-        
-        button.addEventListener('mouseout', function() {
-            this.style.transform = '';
-            this.style.boxShadow = '';
-        });
-        
-        button.addEventListener('mousedown', function() {
-            this.style.transform = 'translateY(-1px)';
-            this.style.boxShadow = '0 5px 10px rgba(0, 0, 0, 0.15)';
-        });
-        
-        button.addEventListener('mouseup', function() {
-            this.style.transform = 'translateY(-3px)';
-            this.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.15)';
-        });
-    });
-    
-    // Add smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-    
-    // Handle touch events for mobile
-    const touchElements = document.querySelectorAll('.service-item, .step, .button, .read-more-btn, .contact-btn');
-    touchElements.forEach(element => {
-        element.addEventListener('touchstart', function() {
-            this.classList.add('touch-active');
-        }, {passive: true});
-        
-        element.addEventListener('touchend', function() {
-            this.classList.remove('touch-active');
-        }, {passive: true});
-    });
-    
-    // Check if device is mobile
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
-    // Add specific mobile optimizations
-    if (isMobile) {
-        document.body.classList.add('mobile-device');
-        
-        // Optimize animations for mobile
-        document.querySelectorAll('.fade-in, .slide-up, .slide-in-left, .slide-in-right, .zoom-in')
-            .forEach(element => {
-                element.style.transitionDuration = '0.3s';
-            });
+    .lightbox-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
     }
-});
+    
+    .lightbox-content img {
+        max-width: 100%;
+        max-height: 90vh;
+        border: 5px solid white;
+    }
+    
+    .lightbox-close {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+    }
+`
+document.head.appendChild(lightboxStyle)
