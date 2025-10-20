@@ -23,6 +23,8 @@ body {
   line-height: 1.6;
   color: var(--dark-color);
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 h1,
@@ -61,6 +63,7 @@ img {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+  box-sizing: border-box;
 }
 
 .section-header {
@@ -718,6 +721,10 @@ section {
   .about-stats {
     grid-template-columns: 1fr;
   }
+
+  .hero {
+    height: 80vh;
+  }
 }
 
 @media (max-width: 768px) {
@@ -759,8 +766,20 @@ section {
     margin: 15px 0;
   }
 
+  .logo h1 {
+    font-size: 1.5rem;
+  }
+
+  #header .container {
+    padding: 10px 20px;
+  }
+
   .hero h1 {
     font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
   }
 
   .hero-buttons {
@@ -770,17 +789,39 @@ section {
 
   .btn {
     width: 100%;
+    padding: 14px 20px;
   }
 
   .pricing-cards {
     flex-direction: column;
     align-items: center;
   }
+
+  .about-content {
+    gap: 30px;
+  }
+
+  .contact-content {
+    gap: 30px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 @media (max-width: 576px) {
+  .logo h1 {
+    font-size: 1.3rem;
+  }
+
   .hero h1 {
     font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
   }
 
   .section-header h2 {
@@ -794,5 +835,47 @@ section {
 
   .modal-content {
     margin: 20% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .gallery-item {
+    height: 200px;
+  }
+
+  .video-wrapper {
+    padding-bottom: 56.25%;
+  }
+
+  .video-wrapper iframe {
+    border-radius: 5px;
+  }
+
+  .pricing-cards {
+    gap: 20px;
+  }
+
+  .pricing-card {
+    max-width: 100%;
+  }
+
+  .footer-content {
+    gap: 20px;
+  }
+
+  .social-icons {
+    justify-content: center;
   }
 }
+
