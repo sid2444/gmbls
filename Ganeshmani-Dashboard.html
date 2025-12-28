@@ -396,7 +396,7 @@
         <div class="logo1">Ganeshmani</div>
       <li id="dashboard" class="active"><i class="fas fa-grid"></i> Dashboard</li>
       <li id="customer"><i class="fas fa-book"></i>New Customer </li>
-      <li><i class="fas fa-school"></i> My Classes</li>
+     <li id="records"><i class="fas fa-book"></i> All Customer</li>
       <li><i class="fas fa-message"></i> Messages</li>
       <li><i class="fas fa-bell"></i> Notifications</li>
       <li><i class="fas fa-calendar"></i> Calendars</li>
@@ -582,16 +582,19 @@ loadTotals();
     navMenu.classList.toggle('active');
   });
 
- document.querySelectorAll('.nav li').forEach(item => {
-  item.addEventListener('click', function () {
-    if (this.id === 'customer') {
-      window.location.href = './Ganeshmani-Customer.html';
-    }
-    if (this.id === 'dashboard') {
-      window.location.href = './Ganeshmani-Dashboard.html';
-    }
-  });
-});
+document.querySelectorAll('.nav li').forEach(item => {
+        item.addEventListener('click', function() {
+            if (this.id === 'customer') {
+                window.location.href = './Ganeshmani-Customer.html';
+            }
+            if (this.id === 'dashboard') {
+                window.location.href = './Ganeshmani-Dashboard.html';
+            }
+             if (this.id === 'records') {
+                window.location.href = './Ganeshmani-Records.html';
+            }
+        });
+    });
 </script>
 
 </body>
