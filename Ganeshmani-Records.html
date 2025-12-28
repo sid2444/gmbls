@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganeshmani-Records</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #cdb7ff;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+            padding: 20px;
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            background: #0f172a;
+            color: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #c7f000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-toggle {
+            background: #c7f000;
+            color: black;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .nav {
+            display: none;
+            flex-direction: column;
+            margin-top: 15px;
+        }
+
+        .nav.active {
+            display: flex;
+        }
+
+        .nav li {
+            list-style: none;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 6px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav li i {
+            margin-right: 10px;
+        }
+
+        .nav li.active,
+        .nav li:hover {
+            background: #c7f000;
+            color: black;
+        }
+
+        .download {
+            background: #c7f000;
+            color: black;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            display: none;
+            margin-top: 15px;
+        }
+
+        .main {
+            flex: 1;
+            background: #f9f9fb;
+            border-radius: 24px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .top-actions input {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            flex: 1;
+        }
+
+        .avatar {
+            border-radius: 50%;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #f8fafc;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+            color: #475569;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .data-table tr:hover {
+            background: #f1f5f9;
+            cursor: pointer;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .edit-btn {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            height: 40px;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #c7f000;
+            box-shadow: 0 0 0 3px rgba(199, 240, 0, .25);
+        }
+
+        .form-group input[readonly] {
+            background: #f1f5f9;
+            font-weight: 700;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .btn-save, .btn-update {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .btn-cancel {
+            background: #e5e7eb;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        /* Stats Container */
+        .stats-container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .1);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #e5e7eb;
+            transition: .3s;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .1);
+        }
+
+        .stat-box span {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .stat-box h3 {
+            margin-top: 6px;
+            font-size: 18px;
+            color: #0f172a;
+        }
+
+        .stat-box.highlight {
+            background: #0f172a;
+            color: white;
+        }
+
+        .stat-box.highlight span {
+            color: #c7f000;
+        }
+
+        .stat-box.highlight h3 {
+            color: white;
+        }
+
+        *::-webkit-scrollbar {
+    display: none;
+  }
+
+        /* Desktop styles */
+        @media (min-width: 1024px) {
+            .app {
+                flex-direction: row;
+                height: 100vh;
+                padding: 20px;
+            }
+
+            .sidebar {
+                width: 230px;
+                margin-bottom: 0;
+                margin-right: 20px;
+            }
+
+            .logo {
+                display: block;
+            }
+
+            .nav {
+                display: flex !important;
+                margin-top: 0;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            .download {
+                display: block;
+                margin-top: 0;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 25px;
+            }
+
+            .topbar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .top-actions {
+                width: auto;
+            }
+
+            .top-actions input {
+                width: 200px;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .form-row {
+                flex-direction: row;
+            }
+
+            .modal {
+                width: 500px;
+            }
+        }
+
+        /* Tablet styles */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .app {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .topbar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .top-actions {
+                width: auto;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .download {
+                display: block;
+            }
+
+            .nav {
+                display: flex !important;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            .form-row {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            Ganeshmani
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <ul class="nav" id="navMenu">
+            <li id="dashboard" class="active"><i class="fas fa-grid"></i> Dashboard</li>
+            <li id="customer"><i class="fas fa-book"></i> New Customer</li>
+            <li><i class="fas fa-users"></i> All Customers</li>
+            <li><i class="fas fa-chart-bar"></i> Reports</li>
+            <li><i class="fas fa-bell"></i> Notifications</li>
+            <li><i class="fas fa-gear"></i> Settings</li>
+        </ul>
+
+        <div class="download">
+            <i class="fas fa-download"></i>
+            <p>Download our<br>mobile app</p>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <!-- HEADER -->
+        <header class="topbar">
+            <h2>Customer Management Dashboard 👋</h2>
+            <div class="top-actions">
+                <input type="text" id="searchInput" placeholder="Search customers...">
+                <img src="https://i.pravatar.cc/40" class="avatar">
+            </div>
+        </header>
+
+        
+
+        <!-- CUSTOMER TABLE -->
+        <section class="table-section">
+            <div class="section-title">
+                <h3>All Customer Records</h3>
+                <button class="add-btn" onclick="openAddModal()">
+                    <i class="fas fa-plus"></i> Add New Customer
+                </button>
+            </div>
+            <div class="table-container">
+                <table class="data-table" id="customerTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Contact</th>
+                            <th>Address</th>
+                            <th>Owner</th>
+                            <th>Total Amount</th>
+                            <th>Remaining</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">Edit Customer Record</div>
+            <button class="close-btn" onclick="closeModal()">×</button>
+        </div>
+        <form class="modal-form" id="editForm">
+            <input type="hidden" id="editId">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Name *</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact No *</label>
+                    <input type="text" id="editContact" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Address *</label>
+                <input type="text" id="editAddress" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Owner *</label>
+                <input type="text" id="editOwner" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Total Work</label>
+                    <input type="number" id="editTotalWork">
+                </div>
+                <div class="form-group">
+                    <label>Work 8.5</label>
+                    <input type="number" id="editWork85">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Work 6.5</label>
+                    <input type="number" id="editWork65">
+                </div>
+                <div class="form-group">
+                    <label>PVC Pipe</label>
+                    <input type="number" id="editPvcPipe">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Total Amount</label>
+                    <input type="number" id="editTotalAmt" oninput="calculateRemaining()">
+                </div>
+                <div class="form-group">
+                    <label>Paid to Office</label>
+                    <input type="number" id="editPaidOffice" oninput="calculateRemaining()">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Paid to Owner</label>
+                    <input type="number" id="editPaidOwner" oninput="calculateRemaining()">
+                </div>
+                <div class="form-group">
+                    <label>Remaining Amount</label>
+                    <input type="number" id="editRemAmt" readonly>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn-delete" onclick="deleteRecord()">Delete</button>
+                <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn-update">Update Record</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    // Initialize Supabase
+  const supabaseClient = supabase.createClient(
+  "https://vmcdlhwovcswxxfhdfiy.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtY2RsaHdvdmNzd3h4ZmhkZml5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MjMzMzEsImV4cCI6MjA4MTk5OTMzMX0.mhS8BBtuH8xAAG3B469jkcefgm73O9rVw7XBZCgWFjE"
+);
+
+    // DOM Elements
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+    const editModal = document.getElementById('editModal');
+    const editForm = document.getElementById('editForm');
+    const searchInput = document.getElementById('searchInput');
+    const tableBody = document.getElementById('tableBody');
+
+    // Event Listeners
+    menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+    searchInput.addEventListener('input', filterCustomers);
+
+    // Navigation
+    document.querySelectorAll('.nav li').forEach(item => {
+        item.addEventListener('click', function() {
+            if (this.id === 'customer') {
+                window.location.href = './Ganeshmani-Customer.html';
+            }
+            if (this.id === 'dashboard') {
+                window.location.href = './Ganeshmani-Dashboard.html';
+            }
+             if (this.id === 'records') {
+                window.location.href = './Ganeshmani-Records.html';
+            }
+        });
+    });
+
+    // Load data on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        loadCustomers();
+        loadTotals();
+    });
+
+    // Load all customers
+    async function loadCustomers() {
+        const { data, error } = await supabaseClient
+            .from('user_dtl')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('Error loading customers:', error);
+            return;
+        }
+
+        renderTable(data);
+    }
+
+    // Render table data
+    function renderTable(customers) {
+        tableBody.innerHTML = '';
+        
+        customers.forEach(customer => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${customer.id}</td>
+                <td>${customer.name || 'N/A'}</td>
+                <td>${customer.contactno || 'N/A'}</td>
+                <td>${customer.address ? customer.address.substring(0, 20) + '...' : 'N/A'}</td>
+                <td>${customer.owner || 'N/A'}</td>
+                <td>₹${customer.total_amt || 0}</td>
+                <td>₹${customer.rem_amt || 0}</td>
+                <td>
+                    <div class="action-btns">
+                        <button class="edit-btn" onclick="editCustomer(${customer.id})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                </td>
+            `;
+            
+            // Add double-click event
+            row.addEventListener('dblclick', () => editCustomer(customer.id));
+            
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Filter customers
+    function filterCustomers() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rows = tableBody.querySelectorAll('tr');
+        
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    }
+
+    // Open edit modal
+    async function editCustomer(id) {
+        const { data, error } = await supabaseClient
+            .from('user_dtl')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) {
+            alert('Error loading customer: ' + error.message);
+            return;
+        }
+
+        // Fill form with data
+        document.getElementById('editId').value = data.id;
+        document.getElementById('editName').value = data.name || '';
+        document.getElementById('editContact').value = data.contactno || '';
+        document.getElementById('editAddress').value = data.address || '';
+        document.getElementById('editOwner').value = data.owner || '';
+        document.getElementById('editTotalWork').value = data.total_work || '';
+        document.getElementById('editWork85').value = data.work_8_5 || '';
+        document.getElementById('editWork65').value = data.work_6_5 || '';
+        document.getElementById('editPvcPipe').value = data.pvc_pipe || '';
+        document.getElementById('editTotalAmt').value = data.total_amt || '';
+        document.getElementById('editPaidOffice').value = data.paid_to_office || '';
+        document.getElementById('editPaidOwner').value = data.paid_to_owner || '';
+        document.getElementById('editRemAmt').value = data.rem_amt || '';
+
+        // Open modal
+        editModal.classList.add('active');
+    }
+
+    // Open add modal
+    function openAddModal() {
+        window.location.href = './custGMBLS.html';
+    }
+
+    // Close modal
+    function closeModal() {
+        editModal.classList.remove('active');
+    }
+
+    // Calculate remaining amount
+    function calculateRemaining() {
+        const total = parseFloat(document.getElementById('editTotalAmt').value) || 0;
+        const paidOffice = parseFloat(document.getElementById('editPaidOffice').value) || 0;
+        const paidOwner = parseFloat(document.getElementById('editPaidOwner').value) || 0;
+        const remaining = total - paidOffice - paidOwner;
+        document.getElementById('editRemAmt').value = remaining.toFixed(2);
+    }
+
+    // Update customer
+    editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const id = document.getElementById('editId').value;
+        const payload = {
+            name: document.getElementById('editName').value,
+            contactno: document.getElementById('editContact').value,
+            address: document.getElementById('editAddress').value,
+            owner: document.getElementById('editOwner').value,
+            total_work: parseInt(document.getElementById('editTotalWork').value) || 0,
+            work_8_5: parseInt(document.getElementById('editWork85').value) || 0,
+            work_6_5: parseInt(document.getElementById('editWork65').value) || 0,
+            pvc_pipe: parseInt(document.getElementById('editPvcPipe').value) || 0,
+            total_amt: parseInt(document.getElementById('editTotalAmt').value) || 0,
+            paid_to_office: parseInt(document.getElementById('editPaidOffice').value) || 0,
+            paid_to_owner: parseInt(document.getElementById('editPaidOwner').value) || 0,
+            rem_amt: parseInt(document.getElementById('editRemAmt').value) || 0
+        };
+
+        const { error } = await supabaseClient
+            .from('user_dtl')
+            .update(payload)
+            .eq('id', id);
+
+        if (error) {
+            alert('Error updating: ' + error.message);
+        } else {
+            alert('Record updated successfully!');
+            closeModal();
+            loadCustomers();
+            loadTotals();
+        }
+    });
+
+    // Delete customer
+    async function deleteRecord() {
+        if (!confirm('Are you sure you want to delete this record?')) return;
+        
+        const id = document.getElementById('editId').value;
+        
+        const { error } = await supabaseClient
+            .from('user_dtl')
+            .delete()
+            .eq('id', id);
+
+        if (error) {
+            alert('Error deleting: ' + error.message);
+        } else {
+            alert('Record deleted successfully!');
+            closeModal();
+            loadCustomers();
+            loadTotals();
+        }
+    }
+
+    // Load totals for stats
+    async function loadTotals() {
+        const { data, error } = await supabaseClient
+            .from("user_dtl")
+            .select(`
+                total_work,
+                work_8_5,
+                work_6_5,
+                pvc_pipe,
+                paid_to_office,
+                paid_to_owner,
+                total_amt,
+                rem_amt
+            `);
+
+        if (error) {
+            console.error(error);
+            return;
+        }
+
+        let totals = {
+            total_work: 0, work_8_5: 0, work_6_5: 0, pvc_pipe: 0,
+            paid_to_office: 0, paid_to_owner: 0, total_amt: 0, rem_amt: 0
+        };
+
+        data.forEach(r => {
+            totals.total_work += r.total_work || 0;
+            totals.work_8_5 += r.work_8_5 || 0;
+            totals.work_6_5 += r.work_6_5 || 0;
+            totals.pvc_pipe += r.pvc_pipe || 0;
+            totals.paid_to_office += r.paid_to_office || 0;
+            totals.paid_to_owner += r.paid_to_owner || 0;
+            totals.total_amt += r.total_amt || 0;
+            totals.rem_amt += r.rem_amt || 0;
+        });
+
+        // Update stats display
+        document.getElementById("tw").innerText = totals.total_work;
+        document.getElementById("w85").innerText = totals.work_8_5;
+        document.getElementById("w65").innerText = totals.work_6_5;
+        document.getElementById("pvc").innerText = totals.pvc_pipe;
+        document.getElementById("po").innerText = totals.paid_to_office;
+        document.getElementById("pw").innerText = totals.paid_to_owner;
+        document.getElementById("ta").innerText = totals.total_amt;
+        document.getElementById("ra").innerText = totals.rem_amt;
+    }
+</script>
+</body>
+</html>
