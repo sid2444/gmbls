@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>New Customer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<style>
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  body{
+    background:#cdb7ff;
+  }
+
+  .app{
+    display:flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 15px;
+  }
+
+  .sidebar{
+    width:100%;
+    background:#0f172a;
+    color:white;
+    border-radius:20px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    margin-bottom: 15px;
+  }
+
+  .logo{
+    font-size:22px;
+    font-weight:700;
+    color: #c7f000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .menu-toggle {
+    background: #c7f000;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 15px;
+    font-size: 18px;
+    cursor: pointer;
+    display: block;
+  }
+
+  .nav {
+    display: none;
+    flex-direction: column;
+    margin-top: 15px;
+  }
+
+  .nav.active {
+    display: flex;
+  }
+
+  .nav li{
+    list-style:none;
+    padding:12px;
+    border-radius:12px;
+    margin:6px 0;
+    cursor:pointer;
+    transition: all 0.3s ease;
+  }
+
+  .nav li i{
+    margin-right:10px;
+    width: 20px;
+  }
+
+  .nav li.active,
+  .nav li:hover{
+    background:#c7f000;
+    color:black;
+  }
+
+  .download{
+    background:#c7f000;
+    color:black;
+    border-radius:16px;
+    padding:15px;
+    text-align:center;
+    font-weight: 500;
+    display: none;
+    margin-top: 15px;
+  }
+
+  .main{
+    flex:1;
+    background:#f9f9fb;
+    border-radius:24px;
+    padding:20px;
+    overflow-y: auto;
+  }
+
+  /* HEADER STYLES */
+  .topbar{
+    display:flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .topbar h2 {
+    color: #0f172a;
+    font-size: 20px;
+  }
+
+  .top-actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    width: 100%;
+  }
+
+  .top-actions input{
+    padding:8px 15px;
+    border-radius:20px;
+    border:1px solid #ddd;
+    flex: 1;
+  }
+
+  .avatar{
+    width: 40px;
+    height: 40px;
+    border-radius:50%;
+    background: #c7f000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  .form-container{
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+  }
+
+  .section-title{
+    font-size:16px;
+    font-weight:600;
+    color:#475569;
+    border-left:4px solid #c7f000;
+    padding-left:10px;
+    margin: 20px 0 15px 0;
+  }
+
+  .form-row{
+    display:flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .form-group{
+    display:flex;
+    flex-direction:column;
+    width: 100%;
+  }
+
+  label{
+    font-size:13px;
+    color:#475569;
+    margin-bottom:6px;
+    font-weight:600;
+  }
+
+  input{
+    height:40px;
+    padding:8px 12px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    font-size:14px;
+    width: 100%;
+  }
+
+  input:focus{
+    outline:none;
+    border-color:#c7f000;
+    box-shadow:0 0 0 3px rgba(199,240,0,.25);
+  }
+
+  input[readonly]{
+    background:#f1f5f9;
+    font-weight:700;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .actions{
+    margin-top:25px;
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+  }
+
+  button{
+    padding:12px 26px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    width: 100%;
+  }
+
+  .btn-save{
+    background:#16a34a;
+    color:white;
+  }
+
+  .btn-clear{
+    background:#e5e7eb;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Tablet styles */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .app {
+      flex-direction: column;
+    }
+    
+    .sidebar {
+      width: 100%;
+    }
+    
+    .main {
+      margin-left: 0;
+    }
+    
+    .topbar {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .top-actions {
+      width: auto;
+    }
+    
+    .top-actions input {
+      width: 200px;
+    }
+    
+    .form-row {
+      flex-direction: row;
+      gap: 20px;
+    }
+    
+    .form-group {
+      min-width: 200px;
+    }
+    
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .actions {
+      flex-direction: row;
+    }
+    
+    button {
+      width: auto;
+    }
+    
+    .menu-toggle {
+      display: none;
+    }
+    
+    .nav {
+      display: flex !important;
+    }
+    
+    .download {
+      display: block;
+    }
+  }
+
+  /* Desktop styles */
+  @media (min-width: 1024px) {
+    .app{
+      display:flex;
+      flex-direction: row;
+      height:100vh;
+      padding:20px;
+    }
+
+    .sidebar{
+      width:230px;
+      margin-bottom: 0;
+      margin-right: 20px;
+    }
+
+    .logo{
+      font-size:22px;
+      font-weight:700;
+      color: #c7f000;
+      display: block;
+    }
+
+    .nav {
+      display: flex !important;
+      flex-direction: column;
+      margin-top: 0;
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+    .download{
+      display: block;
+      margin-top: 0;
+    }
+
+    .main{
+      flex:1;
+      margin-left:0;
+      background:#f9f9fb;
+      border-radius:24px;
+      padding:25px;
+      overflow-y: auto;
+    }
+
+    /* HEADER STYLES */
+    .topbar{
+      display:flex;
+      flex-direction: row;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e2e8f0;
+      gap: 0;
+    }
+
+    .topbar h2 {
+      color: #0f172a;
+      font-size: 24px;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      width: auto;
+    }
+
+    .top-actions input{
+      padding:8px 15px;
+      border-radius:20px;
+      border:1px solid #ddd;
+      width: 200px;
+    }
+
+    .form-container{
+      background:white;
+      padding:28px;
+      border-radius:18px;
+      box-shadow:0 10px 30px rgba(0,0,0,.1);
+    }
+
+    .section-title{
+      font-size:16px;
+      font-weight:600;
+      color:#475569;
+      border-left:4px solid #c7f000;
+      padding-left:10px;
+      margin-bottom:20px;
+    }
+
+    .form-row{
+      display:flex;
+      flex-direction: row;
+      gap:24px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+    .form-group{
+      display:flex;
+      flex-direction:column;
+      min-width:200px;
+      width: auto;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:20px;
+    }
+
+    .actions{
+      margin-top:30px;
+      display:flex;
+      flex-direction: row;
+      gap:15px;
+    }
+
+    button{
+      padding:12px 26px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+      width: auto;
+    }
+  }
+</style>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      Ganeshmani
+      <section class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </section>
+    </div>
+
+    <ul class="nav" id="navMenu">
+      <li id="dashboard" ><i class="fa fa-grid"></i> Dashboard</li>
+      <li id="customer" class="active" ><i class="fa fa-book"></i>New Customer </li>
+      <li><i class="fa fa-book"></i> Work Records</li>
+      <li><i class="fa fa-message"></i> Messages</li>
+      <li><i class="fa fa-bell"></i> Notifications</li>
+      <li><i class="fa fa-calendar"></i> Calendars</li>
+      <li><i class="fa fa-users"></i> Community</li>
+      <li><i class="fa fa-gear"></i> Settings</li>
+    </ul>
+
+    <div class="download">
+      <i class="fa fa-download"></i>
+      <p>Download our<br>mobile app</p>
+    </div>
+  </aside>
+  
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <h2>Add New Customer</h2>
+    </div>
+
+    <div class="form-container">
+      <!-- PERSONAL -->
+      <div class="section-title">Personal Info</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Name *</label>
+          <input id="name">
+        </div>
+        <div class="form-group">
+          <label>Contact No *</label>
+          <input id="contactno">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex:1">
+          <label>Address *</label>
+          <input id="address">
+        </div>
+      </div>
+
+      <!-- WORK -->
+      <div class="section-title">Work Details</div>
+      <div class="grid">
+        <div class="form-group"><label>Total Work</label><input id="total_work" type="number"></div>
+        <div class="form-group"><label>Work 8.5</label><input id="work_85" type="number"></div>
+        <div class="form-group"><label>Work 6.5</label><input id="work_65" type="number"></div>
+        <div class="form-group"><label>PVC Pipe</label><input id="pvc_pipe" type="number"></div>
+      </div>
+
+      <!-- PAYMENT -->
+      <div class="section-title" style="margin-top:30px;">Payment</div>
+      <div class="grid">
+        <div class="form-group"><label>Owner *</label><input id="owner"></div>
+        <div class="form-group"><label>Total Amount</label><input id="total_amt" type="number"></div>
+        <div class="form-group"><label>Paid Office</label><input id="paid_to_office" type="number"></div>
+        <div class="form-group"><label>Paid Owner</label><input id="paid_to_owner" type="number"></div>
+        <div class="form-group"><label>Remaining</label><input id="rem_amt" readonly></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-save" onclick="save()">SAVE</button>
+        <button class="btn-clear" onclick="clearForm()">CLEAR</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabaseClient = supabase.createClient(
+  "https://vmcdlhwovcswxxfhdfiy.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtY2RsaHdvdmNzd3h4ZmhkZml5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MjMzMzEsImV4cCI6MjA4MTk5OTMzMX0.mhS8BBtuH8xAAG3B469jkcefgm73O9rVw7XBZCgWFjE"
+);
+
+// Mobile menu toggle
+document.getElementById('menuToggle').addEventListener('click', function() {
+  const navMenu = document.getElementById('navMenu');
+  navMenu.classList.toggle('active');
+});
+
+function calculateRemaining(){
+  const total = +total_amt.value || 0;
+  const po = +paid_to_office.value || 0;
+  const pw = +paid_to_owner.value || 0;
+  rem_amt.value = total - po - pw;
+}
+
+["total_amt","paid_to_office","paid_to_owner"]
+.forEach(id => document.getElementById(id).addEventListener("input", calculateRemaining));
+
+async function save(){
+  const name = document.getElementById("name").value.trim();
+  const contactno = document.getElementById("contactno").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const owner = document.getElementById("owner").value.trim();
+
+  if(!name || !contactno || !address || !owner){
+    alert("Fill required fields");
+    return;
+  }
+
+  const payload = {
+    name, contactno, address, owner,
+    total_work:+total_work.value||0,
+    work_8_5:+work_85.value||0,
+    work_6_5:+work_65.value||0,
+    pvc_pipe:+pvc_pipe.value||0,
+    paid_to_office:+paid_to_office.value||0,
+    paid_to_owner:+paid_to_owner.value||0,
+    total_amt:+total_amt.value||0,
+    rem_amt:+rem_amt.value||0
+  };
+
+  const { error } = await supabaseClient.from("user_dtl").insert([payload]);
+  if(error) alert(error.message);
+  else { alert("Saved ✅"); clearForm(); }
+}
+
+function clearForm(){
+  document.querySelectorAll("input").forEach(i=>{
+    if(!i.hasAttribute("readonly")) i.value="";
+  });
+  rem_amt.value="";
+}
+
+document.querySelectorAll('.nav li').forEach(item => {
+  item.addEventListener('click', function () {
+    if (this.id === 'customer') {
+      window.location.href = './custGMBLS.html';
+    }
+    if (this.id === 'dashboard') {
+      window.location.href = './Ganeshmani-Dashboard.html';
+    }
+  });
+});
+</script>
+</body>
+</html>
