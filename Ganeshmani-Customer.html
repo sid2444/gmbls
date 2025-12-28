@@ -575,15 +575,19 @@ function clearForm(){
 }
 
 document.querySelectorAll('.nav li').forEach(item => {
-  item.addEventListener('click', function () {
-    if (this.id === 'customer') {
-      window.location.href = './custGMBLS.html';
-    }
-    if (this.id === 'dashboard') {
-      window.location.href = './Ganeshmani-Dashboard.html';
-    }
-  });
-});
+        item.addEventListener('click', function() {
+            if (this.id === 'customer') {
+                window.location.href = './Ganeshmani-Customer.html';
+            }
+            if (this.id === 'dashboard') {
+                window.location.href = './Ganeshmani-Dashboard.html';
+            }
+             if (this.id === 'records') {
+                window.location.href = './Ganeshmani-Records.html';
+            }
+        });
+    });
+
 </script>
 </body>
 </html>
