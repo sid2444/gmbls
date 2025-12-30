@@ -74,10 +74,16 @@
   <div id="error" class="error"></div>
 </div>
 
-<!-- Supabase client -->
-<script type="module" src="supabaseClient.js"></script>
-
+<!-- ✅ Supabase + Login Logic -->
 <script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
+
+  // 🔐 Supabase config (ANON key is SAFE)
+  const SUPABASE_URL = "https://vmcdlhwovcswxxfhdfiy.supabase.co"
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtY2RsaHdvdmNzd3h4ZmhkZml5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MjMzMzEsImV4cCI6MjA4MTk5OTMzMX0.mhS8BBtuH8xAAG3B469jkcefgm73O9rVw7XBZCgWFjE"
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
   const btn = document.getElementById("loginBtn")
   const errorBox = document.getElementById("error")
 
@@ -94,7 +100,7 @@
       return
     }
 
-    const { error } = await window.supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password
     })
