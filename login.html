@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 30px;
+      width: 320px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      background: #2c5364;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .login-box button:hover {
+      background: #203a43;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="login-box">
+  <h2>Login</h2>
+
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Password" />
+
+  <button id="loginBtn">Login</button>
+
+  <div id="error" class="error"></div>
+</div>
+
+<!-- Supabase client -->
+<script type="module" src="supabaseClient.js"></script>
+
+<script type="module">
+  const btn = document.getElementById("loginBtn")
+  const errorBox = document.getElementById("error")
+
+  btn.addEventListener("click", login)
+
+  async function login() {
+    const email = document.getElementById("email").value.trim()
+    const password = document.getElementById("password").value.trim()
+
+    errorBox.textContent = ""
+
+    if (!email || !password) {
+      errorBox.textContent = "Email and password required"
+      return
+    }
+
+    const { error } = await window.supabase.auth.signInWithPassword({
+      email,
+      password
+    })
+
+    if (error) {
+      errorBox.textContent = error.message
+      return
+    }
+
+    // ✅ Login success
+    window.location.href = "dashboard.html"
+  }
+</script>
+
+</body>
+</html>
