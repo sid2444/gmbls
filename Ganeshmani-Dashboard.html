@@ -599,26 +599,29 @@ document.querySelectorAll('.nav li').forEach(item => {
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-/* 🔐 AUTH GUARD — BLOCK DIRECT URL ACCESS */
 const supabaseClient = supabase.createClient(
   "https://vmcdlhwovcswxxfhdfiy.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtY2RsaHdvdmNzd3h4ZmhkZml5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MjMzMzEsImV4cCI6MjA4MTk5OTMzMX0.mhS8BBtuH8xAAG3B469jkcefgm73O9rVw7XBZCgWFjE"
 
 );
 
-(async function checkAuth() {
-  const { data: { session } } = await supabaseClient.auth.getSession();
+(async function () {
+  const { data } = await supabaseClient.auth.getSession();
 
-  if (!session) {
-    // ❌ Not logged in → redirect
+  if (!data.session) {
+    // 🚫 NOT LOGGED IN → IMMEDIATE REDIRECT
     window.location.replace("./login.html");
-    return;
+    return; // ⛔ STOP EVERYTHING
   }
 
-  // ✅ Logged in → allow page
+  // ✅ LOGGED IN → SHOW PAGE
+  document.body.style.display = "block";
 })();
 </script>
+
 
    
 
