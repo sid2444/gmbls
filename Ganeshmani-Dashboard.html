@@ -380,7 +380,7 @@
     }
     </style>
 </head>
-<body>
+<body style="display:none">
 <div class="app">
 
   <!-- SIDEBAR -->
@@ -595,6 +595,24 @@ document.querySelectorAll('.nav li').forEach(item => {
             }
         });
     });
+</script>
+
+    // for login code
+    <script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
+
+  const supabaseClient = supabase.createClient(
+  "https://vmcdlhwovcswxxfhdfiy.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtY2RsaHdvdmNzd3h4ZmhkZml5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MjMzMzEsImV4cCI6MjA4MTk5OTMzMX0.mhS8BBtuH8xAAG3B469jkcefgm73O9rVw7XBZCgWFjE"
+);
+
+  const { data: { session } } = await supabase.auth.getSession()
+
+  if (!session) {
+    window.location.replace("./login.html")
+  } else {
+    document.body.style.display = "block"
+  }
 </script>
 
 </body>
