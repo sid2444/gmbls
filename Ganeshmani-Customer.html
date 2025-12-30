@@ -480,7 +480,17 @@
           <label>Contact No *</label>
           <input id="contactno">
         </div>
+
+        <div class="form-group" style="flex:1">
+    <label>Date *</label>
+    <input id="created_at" type="date">
+  </div>
       </div>
+
+      
+  
+
+
 
       <div class="form-row">
         <div class="form-group" style="flex:1">
@@ -551,16 +561,24 @@ async function save(){
   }
 
   const payload = {
-    name, contactno, address, owner,
-    total_work:+total_work.value||0,
-    work_8_5:+work_85.value||0,
-    work_6_5:+work_65.value||0,
-    pvc_pipe:+pvc_pipe.value||0,
-    paid_to_office:+paid_to_office.value||0,
-    paid_to_owner:+paid_to_owner.value||0,
-    total_amt:+total_amt.value||0,
-    rem_amt:+rem_amt.value||0
-  };
+  created_at: document.getElementById("created_at").value, // 👈 DATE ADDED
+
+  name,
+  contactno,
+  address,
+  owner,
+
+  total_work: +total_work.value || 0,
+  work_8_5: +work_85.value || 0,
+  work_6_5: +work_65.value || 0,
+  pvc_pipe: +pvc_pipe.value || 0,
+
+  paid_to_office: +paid_to_office.value || 0,
+  paid_to_owner: +paid_to_owner.value || 0,
+  total_amt: +total_amt.value || 0,
+  rem_amt: +rem_amt.value || 0
+};
+
 
   const { error } = await supabaseClient.from("user_dtl").insert([payload]);
   if(error) alert(error.message);
