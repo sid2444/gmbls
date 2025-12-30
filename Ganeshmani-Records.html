@@ -518,14 +518,12 @@
         </div>
 
         <ul class="nav" id="navMenu">
-      <li id="dashboard" ><i class="fas fa-grid"></i> Dashboard</li>
-      <li id="customer"><i class="fas fa-book"></i>New Customer </li>
-      <li id="records" class="active"><i class="fas fa-users"></i> All Customer</li>
-      <li><i class="fas fa-message"></i> Messages</li>
-      <li><i class="fas fa-bell"></i> Notifications</li>
-      <li><i class="fas fa-calendar"></i> Calendars</li>
-      <li><i class="fas fa-users"></i> Community</li>
-      <li><i class="fas fa-gear"></i> Settings</li>
+            <li id="dashboard" class="active"><i class="fas fa-grid"></i> Dashboard</li>
+            <li id="customer"><i class="fas fa-book"></i> New Customer</li>
+            <li><i class="fas fa-users"></i> All Customers</li>
+            <li><i class="fas fa-chart-bar"></i> Reports</li>
+            <li><i class="fas fa-bell"></i> Notifications</li>
+            <li><i class="fas fa-gear"></i> Settings</li>
         </ul>
 
         <div class="download">
@@ -560,13 +558,21 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Date</th>
                             <th>Name</th>
                             <th>Contact</th>
                             <th>Address</th>
                             <th>Owner</th>
+
+                            <th>Total Work</th>
+                            <th>Work 8.5</th>
+                            <th>Work 6.5</th>
+                            <th>PVC Pipe</th>
+
+                            <th>Paid Office</th>
+                            <th>Paid Owner</th>
                             <th>Total Amount</th>
                             <th>Remaining</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -597,8 +603,16 @@
                     <label>Contact No *</label>
                     <input type="text" id="editContact" required>
                 </div>
+                
             </div>
             
+            <div class="form-row">
+            <div class="form-group">
+                <label>Date *</label>
+                <input type="date" id="editDate" required>
+            </div>
+            </div>
+
             <div class="form-group">
                 <label>Address *</label>
                 <input type="text" id="editAddress" required>
@@ -683,7 +697,7 @@
     searchInput.addEventListener('input', filterCustomers);
 
     // Navigation
-    document.querySelectorAll('.nav li').forEach(item => {
+  document.querySelectorAll('.nav li').forEach(item => {
         item.addEventListener('click', function() {
             if (this.id === 'customer') {
                 window.location.href = './Ganeshmani-Customer.html';
@@ -726,12 +740,21 @@
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${customer.id}</td>
-                <td>${customer.name || 'N/A'}</td>
-                <td>${customer.contactno || 'N/A'}</td>
-                <td>${customer.address ? customer.address.substring(0, 20) + '...' : 'N/A'}</td>
-                <td>${customer.owner || 'N/A'}</td>
-                <td>₹${customer.total_amt || 0}</td>
-                <td>₹${customer.rem_amt || 0}</td>
+      <td>${customer.created_at || 'N/A'}</td>
+      <td>${customer.name || 'N/A'}</td>
+      <td>${customer.contactno || 'N/A'}</td>
+      <td>${customer.address ? customer.address.substring(0, 20) + '…' : 'N/A'}</td>
+      <td>${customer.owner || 'N/A'}</td>
+
+      <td>${customer.total_work ?? 0}</td>
+      <td>${customer.work_8_5 ?? 0}</td>
+      <td>${customer.work_6_5 ?? 0}</td>
+      <td>${customer.pvc_pipe ?? 0}</td>
+
+      <td>₹${customer.paid_to_office ?? 0}</td>
+      <td>₹${customer.paid_to_owner ?? 0}</td>
+      <td>₹${customer.total_amt ?? 0}</td>
+      <td>₹${customer.rem_amt ?? 0}</td>
                 <td>
                     <div class="action-btns">
                         <button class="edit-btn" onclick="editCustomer(${customer.id})">
@@ -747,6 +770,8 @@
             tableBody.appendChild(row);
         });
     }
+
+    
 
     // Filter customers
     function filterCustomers() {
@@ -775,6 +800,7 @@
         // Fill form with data
         document.getElementById('editId').value = data.id;
         document.getElementById('editName').value = data.name || '';
+        document.getElementById('editName').value = data.name || '';
         document.getElementById('editContact').value = data.contactno || '';
         document.getElementById('editAddress').value = data.address || '';
         document.getElementById('editOwner').value = data.owner || '';
@@ -793,7 +819,7 @@
 
     // Open add modal
     function openAddModal() {
-        window.location.href = './Ganeshmani-Customer.html';
+        window.location.href = './custGMBLS.html';
     }
 
     // Close modal
@@ -818,6 +844,7 @@
         const payload = {
             name: document.getElementById('editName').value,
             contactno: document.getElementById('editContact').value,
+            created_at: document.getElementById('editDate').value, // 👈 DATE ADDED
             address: document.getElementById('editAddress').value,
             owner: document.getElementById('editOwner').value,
             total_work: parseInt(document.getElementById('editTotalWork').value) || 0,
@@ -828,6 +855,7 @@
             paid_to_office: parseInt(document.getElementById('editPaidOffice').value) || 0,
             paid_to_owner: parseInt(document.getElementById('editPaidOwner').value) || 0,
             rem_amt: parseInt(document.getElementById('editRemAmt').value) || 0
+            
         };
 
         const { error } = await supabaseClient
@@ -912,6 +940,18 @@
         document.getElementById("ta").innerText = totals.total_amt;
         document.getElementById("ra").innerText = totals.rem_amt;
     }
+
+
+    document.getElementById("searchInput").addEventListener("input", function () {
+  const searchValue = this.value.toLowerCase();
+  const rows = document.querySelectorAll("#tableBody tr");
+
+  rows.forEach(row => {
+    const rowText = row.innerText.toLowerCase();
+    row.style.display = rowText.includes(searchValue) ? "" : "none";
+  });
+});
+
 </script>
 </body>
 </html>
