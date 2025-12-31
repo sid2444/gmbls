@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Ledger System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #cdb7ff;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+            padding: 20px;
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            background: #0f172a;
+            color: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #c7f000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-toggle {
+            background: #c7f000;
+            color: black;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .nav {
+            display: none;
+            flex-direction: column;
+            margin-top: 15px;
+        }
+
+        .nav.active {
+            display: flex;
+        }
+
+        .nav li {
+            list-style: none;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 6px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav li i {
+            margin-right: 10px;
+        }
+
+        .nav li.active,
+        .nav li:hover {
+            background: #c7f000;
+            color: black;
+        }
+
+        .download {
+            background: #c7f000;
+            color: black;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            display: none;
+            margin-top: 15px;
+        }
+
+        .main {
+            flex: 1;
+            background: #f9f9fb;
+            border-radius: 24px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .top-actions input {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            flex: 1;
+        }
+
+        .avatar {
+            border-radius: 50%;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: #f8fafc;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+            color: #475569;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .data-table tr.main-row {
+            background: white;
+        }
+
+        .data-table tr.main-row:hover {
+            background: #f1f5f9;
+            cursor: pointer;
+        }
+
+        /* Ledger Row Styles */
+        .ledger-row {
+            background: #f8fafc !important;
+        }
+
+        .ledger-details {
+            background: #f1f5f9;
+            display: none;
+        }
+
+        .ledger-details.active {
+            display: table-row;
+        }
+
+        .ledger-content {
+            padding: 0;
+        }
+
+        .ledger-container {
+            width: 100%;
+            padding: 15px;
+        }
+
+        .ledger-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .ledger-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .ledger-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .ledger-table th {
+            background: #e2e8f0;
+            padding: 10px;
+            font-size: 12px;
+            color: #475569;
+            text-align: left;
+        }
+
+        .ledger-table td {
+            padding: 10px;
+            font-size: 13px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .ledger-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .payment-form {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            height: 40px;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #c7f000;
+            box-shadow: 0 0 0 3px rgba(199, 240, 0, .25);
+        }
+
+        /* Action Buttons */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit-btn, .ledger-btn, .add-payment-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .edit-btn {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .ledger-btn {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .add-payment-btn {
+            background: #16a34a;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .btn-save, .btn-update {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .btn-cancel {
+            background: #e5e7eb;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .form-row {
+                flex-direction: row;
+            }
+            
+            .form-group {
+                flex: 1;
+            }
+        }
+
+        /* Desktop styles */
+        @media (min-width: 1024px) {
+            .app {
+                flex-direction: row;
+                height: 100vh;
+                padding: 20px;
+            }
+
+            .sidebar {
+                width: 230px;
+                margin-bottom: 0;
+                margin-right: 20px;
+            }
+
+            .logo {
+                display: block;
+            }
+
+            .nav {
+                display: flex !important;
+                margin-top: 0;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            .download {
+                display: block;
+                margin-top: 0;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 25px;
+            }
+
+            .topbar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .top-actions {
+                width: auto;
+            }
+
+            .top-actions input {
+                width: 200px;
+            }
+
+            .form-row {
+                flex-direction: row;
+            }
+
+            .modal {
+                width: 500px;
+            }
+        }
+
+        /* Tablet styles */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .app {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .topbar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .top-actions {
+                width: auto;
+            }
+
+            .download {
+                display: block;
+            }
+
+            .nav {
+                display: flex !important;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+        }
+
+        *::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            Ganeshmani
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <ul class="nav" id="navMenu">
+            <li id="dashboard"><i class="fas fa-grid"></i> Dashboard</li>
+            <li id="customer"><i class="fas fa-book"></i> New Customer</li>
+            <li id="all-customers" class="active"><i class="fas fa-users"></i> All Customers</li>
+            <li id="ledger"><i class="fas fa-message"></i> ledger</li>
+            <li><i class="fas fa-bell"></i> Notifications</li>
+            <li><i class="fas fa-calendar"></i> Calendars</li>
+            <li><i class="fas fa-users"></i> Community</li>
+            <li><i class="fas fa-gear"></i> Settings</li>
+        </ul>
+
+        <div class="download">
+            <i class="fas fa-download"></i>
+            <p>Download our<br>mobile app</p>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <!-- HEADER -->
+        <header class="topbar">
+            <h2>Payment Ledger System 👋</h2>
+            <div class="top-actions">
+                <input type="text" id="searchInput" placeholder="Search customers...">
+                <img src="https://i.pravatar.cc/40" class="avatar">
+            </div>
+        </header>
+
+        <!-- CUSTOMER TABLE WITH LEDGER -->
+        <section class="table-section">
+            <div class="section-title">
+                <h3>Customer Records with Payment Ledger</h3>
+                <button class="add-btn" onclick="openAddModal()">
+                    <i class="fas fa-plus"></i> Add New Customer
+                </button>
+            </div>
+            <div class="table-container">
+                <table class="data-table" id="customerTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Contact</th>
+                            <th>Total Amt</th>
+                            <th>Paid</th>
+                            <th>Remaining</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- EDIT CUSTOMER MODAL -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">Edit Customer Record</div>
+            <button class="close-btn" onclick="closeEditModal()">×</button>
+        </div>
+        <form class="modal-form" id="editForm">
+            <input type="hidden" id="editId">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Name *</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="form-group">
+                    <label>Contact No *</label>
+                    <input type="text" id="editContact" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date *</label>
+                    <input type="date" id="editDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Owner *</label>
+                    <input type="text" id="editOwner" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Address *</label>
+                <input type="text" id="editAddress" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Total Work</label>
+                    <input type="number" id="editTotalWork">
+                </div>
+                <div class="form-group">
+                    <label>Work 8.5</label>
+                    <input type="number" id="editWork85">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Work 6.5</label>
+                    <input type="number" id="editWork65">
+                </div>
+                <div class="form-group">
+                    <label>PVC Pipe</label>
+                    <input type="number" id="editPvcPipe">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Total Amount</label>
+                    <input type="number" id="editTotalAmt">
+                </div>
+                <div class="form-group">
+                    <label>Initial Paid Amount</label>
+                    <input type="number" id="editInitialPaid">
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+                <button type="submit" class="btn-update">Update Record</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    // Initialize Supabase
+    const supabaseClient = supabase.createClient(
+       "https://vmcdlhwovcswxxfhdfiy.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZtY2RsaHdvdmNzd3h4ZmhkZml5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MjMzMzEsImV4cCI6MjA4MTk5OTMzMX0.mhS8BBtuH8xAAG3B469jkcefgm73O9rVw7XBZCgWFjE"
+);
+
+    // DOM Elements
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+    const editModal = document.getElementById('editModal');
+    const editForm = document.getElementById('editForm');
+    const searchInput = document.getElementById('searchInput');
+    const tableBody = document.getElementById('tableBody');
+
+    // Event Listeners
+    menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
+    searchInput.addEventListener('input', filterCustomers);
+
+    // Navigation
+   document.querySelectorAll('.nav li').forEach(item => {
+        item.addEventListener('click', function() {
+            if (this.id === 'customer') {
+                window.location.href = './Ganeshmani-Customer.html';
+            }
+            if (this.id === 'dashboard') {
+                window.location.href = './Ganeshmani-Dashboard.html';
+            }
+             if (this.id === 'records') {
+                window.location.href = './Ganeshmani-Records.html';
+            }
+            if (this.id === 'ledger') {
+                window.location.href = './Ganeshmani-ledger.html';
+            }
+        });
+    });
+
+    // Load data on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        loadCustomersWithLedger();
+    });
+
+    // Load customers with their payment ledger
+    async function loadCustomersWithLedger() {
+        const { data: customers, error } = await supabaseClient
+            .from('user_dtl')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('Error loading customers:', error);
+            return;
+        }
+
+        renderTable(customers);
+    }
+
+    // Render table with ledger capability
+    function renderTable(customers) {
+        tableBody.innerHTML = '';
+        
+        customers.forEach(customer => {
+            // Calculate total paid from ledger
+            const totalPaid = (customer.paid_to_office || 0) + (customer.paid_to_owner || 0);
+            const remaining = (customer.total_amt || 0) - totalPaid;
+            
+            // Format date
+            let displayDate = 'N/A';
+            if (customer.created_at) {
+                const date = new Date(customer.created_at);
+                displayDate = date.toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            }
+            
+            // Create main row
+            const mainRow = document.createElement('tr');
+            mainRow.className = 'main-row';
+            mainRow.dataset.customerId = customer.id;
+            mainRow.innerHTML = `
+                <td>${customer.id}</td>
+                <td>${displayDate}</td>
+                <td>${customer.name || 'N/A'}</td>
+                <td>${customer.contactno || 'N/A'}</td>
+                <td>₹${customer.total_amt || 0}</td>
+                <td>₹${totalPaid}</td>
+                <td>₹${remaining}</td>
+                <td>
+                    <div class="action-btns">
+                        <button class="edit-btn" onclick="editCustomer(${customer.id})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="ledger-btn" onclick="toggleLedger(${customer.id})">
+                            <i class="fas fa-book"></i> Ledger
+                        </button>
+                    </div>
+                </td>
+            `;
+            
+            tableBody.appendChild(mainRow);
+            
+            // Create ledger row
+            const ledgerRow = document.createElement('tr');
+            ledgerRow.className = 'ledger-details';
+            ledgerRow.id = `ledger-${customer.id}`;
+            ledgerRow.innerHTML = `
+                <td colspan="8" class="ledger-content">
+                    <div class="ledger-container">
+                        <div class="ledger-header">
+                            <div class="ledger-title">Payment Ledger for ${customer.name}</div>
+                            <div>
+                                <strong>Total: ₹${customer.total_amt || 0}</strong> | 
+                                <strong>Paid: ₹${totalPaid}</strong> | 
+                                <strong>Remaining: ₹${remaining}</strong>
+                            </div>
+                        </div>
+                        
+                        <!-- Payment History Table -->
+                        <table class="ledger-table" id="ledger-table-${customer.id}">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Mode</th>
+                                    <th>Remarks</th>
+                                    <th>Entry Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledger-body-${customer.id}">
+                                <!-- Ledger entries will be loaded here -->
+                                <tr><td colspan="5" style="text-align: center; padding: 20px;">Loading payment history...</td></tr>
+                            </tbody>
+                        </table>
+                        
+                        <!-- Add Payment Form -->
+                        <div class="payment-form">
+                            <h4>Add New Payment</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Amount *</label>
+                                    <input type="number" id="payment-amount-${customer.id}" placeholder="Enter amount" min="1" max="${remaining}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Payment Date *</label>
+                                    <input type="date" id="payment-date-${customer.id}" value="${new Date().toISOString().split('T')[0]}">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Payment Mode *</label>
+                                    <select id="payment-mode-${customer.id}">
+                                        <option value="Cash">Cash</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Cheque">Cheque</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Receiver</label>
+                                    <select id="payment-receiver-${customer.id}">
+                                        <option value="Office">Office</option>
+                                        <option value="Owner">Owner</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Remarks</label>
+                                <textarea id="payment-remarks-${customer.id}" placeholder="Additional notes"></textarea>
+                            </div>
+                            <button class="add-payment-btn" onclick="addPayment(${customer.id})">
+                                <i class="fas fa-save"></i> Record Payment
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            `;
+            
+            tableBody.appendChild(ledgerRow);
+            
+            // Load ledger for this customer
+            loadCustomerLedger(customer.id);
+        });
+    }
+
+    // Load payment ledger for a specific customer
+    async function loadCustomerLedger(customerId) {
+        const { data: payments, error } = await supabaseClient
+            .from('payment_dtl')
+            .select('*')
+            .eq('user_id', customerId)
+            .order('payment_date', { ascending: false });
+
+        if (error) {
+            console.error('Error loading payments:', error);
+            return;
+        }
+
+        const ledgerBody = document.getElementById(`ledger-body-${customerId}`);
+        if (!ledgerBody) return;
+
+        if (payments.length === 0) {
+            ledgerBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">No payment records found</td></tr>';
+            return;
+        }
+
+        let html = '';
+        payments.forEach(payment => {
+            const paymentDate = new Date(payment.payment_date).toLocaleDateString('en-IN');
+            const createdDate = new Date(payment.created_at).toLocaleString('en-IN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            html += `
+                <tr>
+                    <td>${paymentDate}</td>
+                    <td>₹${payment.paid_amount}</td>
+                    <td>${payment.payment_mode}</td>
+                    <td>${payment.remarks || '-'}</td>
+                    <td>${createdDate}</td>
+                </tr>
+            `;
+        });
+        
+        ledgerBody.innerHTML = html;
+    }
+
+    // Toggle ledger visibility
+    function toggleLedger(customerId) {
+        const ledgerRow = document.getElementById(`ledger-${customerId}`);
+        if (!ledgerRow) return;
+        
+        // Close all other ledgers
+        document.querySelectorAll('.ledger-details').forEach(row => {
+            if (row.id !== `ledger-${customerId}`) {
+                row.classList.remove('active');
+            }
+        });
+        
+        // Toggle current ledger
+        ledgerRow.classList.toggle('active');
+        
+        // Scroll to ledger if opening
+        if (ledgerRow.classList.contains('active')) {
+            ledgerRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    // Add new payment
+    async function addPayment(customerId) {
+        const amount = document.getElementById(`payment-amount-${customerId}`).value;
+        const date = document.getElementById(`payment-date-${customerId}`).value;
+        const mode = document.getElementById(`payment-mode-${customerId}`).value;
+        const receiver = document.getElementById(`payment-receiver-${customerId}`).value;
+        const remarks = document.getElementById(`payment-remarks-${customerId}`).value;
+
+        if (!amount || amount <= 0) {
+            alert('Please enter a valid payment amount');
+            return;
+        }
+
+        if (!date) {
+            alert('Please select a payment date');
+            return;
+        }
+
+        // Get current customer data
+        const { data: customer, error: customerError } = await supabaseClient
+            .from('user_dtl')
+            .select('*')
+            .eq('id', customerId)
+            .single();
+
+        if (customerError) {
+            alert('Error loading customer: ' + customerError.message);
+            return;
+        }
+
+        // Calculate new remaining amount
+        const currentTotal = customer.total_amt || 0;
+        const currentPaidOffice = customer.paid_to_office || 0;
+        const currentPaidOwner = customer.paid_to_owner || 0;
+        const paymentAmount = parseFloat(amount);
+
+        // Update appropriate field based on receiver
+        let updatePayload = {};
+        if (receiver === 'Office') {
+            updatePayload.paid_to_office = currentPaidOffice + paymentAmount;
+        } else {
+            updatePayload.paid_to_owner = currentPaidOwner + paymentAmount;
+        }
+        
+        // Recalculate remaining
+        const newTotalPaid = (updatePayload.paid_to_office || currentPaidOffice) + 
+                            (updatePayload.paid_to_owner || currentPaidOwner);
+        updatePayload.rem_amt = currentTotal - newTotalPaid;
+
+        // Insert payment record
+        const paymentPayload = {
+            user_id: customerId,
+            paid_amount: paymentAmount,
+            payment_date: date,
+            payment_mode: mode,
+            receiver: receiver,
+            remarks: remarks
+        };
+
+        try {
+            // First update the customer record
+            const { error: updateError } = await supabaseClient
+                .from('user_dtl')
+                .update(updatePayload)
+                .eq('id', customerId);
+
+            if (updateError) throw updateError;
+
+            // Then insert payment record
+            const { error: paymentError } = await supabaseClient
+                .from('payment_dtl')
+                .insert([paymentPayload]);
+
+            if (paymentError) throw paymentError;
+
+            // Success
+            alert('Payment recorded successfully!');
+            
+            // Clear form
+            document.getElementById(`payment-amount-${customerId}`).value = '';
+            document.getElementById(`payment-remarks-${customerId}`).value = '';
+            
+            // Reload customer and ledger
+            loadCustomerLedger(customerId);
+            
+            // Find and update the main row
+            const mainRow = document.querySelector(`tr.main-row[data-customer-id="${customerId}"]`);
+            if (mainRow) {
+                const totalPaid = newTotalPaid;
+                const remaining = updatePayload.rem_amt;
+                
+                mainRow.cells[4].textContent = `₹${currentTotal}`;
+                mainRow.cells[5].textContent = `₹${totalPaid}`;
+                mainRow.cells[6].textContent = `₹${remaining}`;
+                
+                // Update ledger header
+                const ledgerHeader = document.querySelector(`#ledger-${customerId} .ledger-header div`);
+                if (ledgerHeader) {
+                    ledgerHeader.innerHTML = `
+                        <strong>Total: ₹${currentTotal}</strong> | 
+                        <strong>Paid: ₹${totalPaid}</strong> | 
+                        <strong>Remaining: ₹${remaining}</strong>
+                    `;
+                }
+            }
+            
+        } catch (error) {
+            console.error('Error recording payment:', error);
+            alert('Error: ' + error.message);
+        }
+    }
+
+    // Edit customer (original record only)
+    async function editCustomer(id) {
+        const { data, error } = await supabaseClient
+            .from('user_dtl')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) {
+            alert('Error loading customer: ' + error.message);
+            return;
+        }
+
+        // Fill form with data
+        document.getElementById('editId').value = data.id;
+        document.getElementById('editName').value = data.name || '';
+        document.getElementById('editContact').value = data.contactno || '';
+        document.getElementById('editAddress').value = data.address || '';
+        document.getElementById('editOwner').value = data.owner || '';
+        document.getElementById('editTotalWork').value = data.total_work || '';
+        document.getElementById('editWork85').value = data.work_8_5 || '';
+        document.getElementById('editWork65').value = data.work_6_5 || '';
+        document.getElementById('editPvcPipe').value = data.pvc_pipe || '';
+        document.getElementById('editTotalAmt').value = data.total_amt || '';
+        document.getElementById('editInitialPaid').value = (data.paid_to_office || 0) + (data.paid_to_owner || 0);
+
+        // Set date
+        if (data.created_at) {
+            const date = new Date(data.created_at);
+            const formattedDate = date.toISOString().split('T')[0];
+            document.getElementById('editDate').value = formattedDate;
+        } else {
+            document.getElementById('editDate').value = '';
+        }
+
+        // Open modal
+        editModal.classList.add('active');
+    }
+
+    // Close edit modal
+    function closeEditModal() {
+        editModal.classList.remove('active');
+    }
+
+    // Update customer (original record only)
+    editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const id = document.getElementById('editId').value;
+        const initialPaid = parseInt(document.getElementById('editInitialPaid').value) || 0;
+        
+        const payload = {
+            name: document.getElementById('editName').value,
+            contactno: document.getElementById('editContact').value,
+            address: document.getElementById('editAddress').value,
+            owner: document.getElementById('editOwner').value,
+            total_work: parseInt(document.getElementById('editTotalWork').value) || 0,
+            work_8_5: parseInt(document.getElementById('editWork85').value) || 0,
+            work_6_5: parseInt(document.getElementById('editWork65').value) || 0,
+            pvc_pipe: parseInt(document.getElementById('editPvcPipe').value) || 0,
+            total_amt: parseInt(document.getElementById('editTotalAmt').value) || 0,
+            // Preserve existing paid amounts (ledger payments)
+            // Only initial paid amount from form is used to set initial state
+            rem_amt: (parseInt(document.getElementById('editTotalAmt').value) || 0) - initialPaid
+        };
+
+        // Handle date separately
+        const dateValue = document.getElementById('editDate').value;
+        if (dateValue) {
+            payload.created_at = new Date(dateValue).toISOString();
+        }
+
+        const { error } = await supabaseClient
+            .from('user_dtl')
+            .update(payload)
+            .eq('id', id);
+
+        if (error) {
+            alert('Error updating: ' + error.message);
+        } else {
+            alert('Customer record updated successfully!');
+            closeEditModal();
+            loadCustomersWithLedger();
+        }
+    });
+
+    // Filter customers
+    function filterCustomers() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const rows = tableBody.querySelectorAll('tr');
+        
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    }
+
+    // Open add modal
+    function openAddModal() {
+        window.location.href = './custGMBLS.html';
+    }
+</script>
+</body>
+</html>
