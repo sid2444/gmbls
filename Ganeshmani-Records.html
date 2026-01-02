@@ -699,7 +699,7 @@
     searchInput.addEventListener('input', filterCustomers);
 
     // Navigation
-  document.querySelectorAll('.nav li').forEach(item => {
+ document.querySelectorAll('.nav li').forEach(item => {
         item.addEventListener('click', function() {
             if (this.id === 'customer') {
                 window.location.href = './Ganeshmani-Customer.html';
@@ -709,6 +709,9 @@
             }
              if (this.id === 'records') {
                 window.location.href = './Ganeshmani-Records.html';
+            }
+            if (this.id === 'ledger') {
+                window.location.href = './Ganeshmani-ledger.html';
             }
         });
     });
