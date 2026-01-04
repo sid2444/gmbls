@@ -880,3 +880,46 @@ section {
     justify-content: center;
   }
 }
+
+
+/* ================================
+   MOBILE OVERFLOW FIX (ADD ONLY)
+================================ */
+
+/* 1️⃣ Stop horizontal white space */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* 2️⃣ Fix mobile menu causing overflow */
+@media (max-width: 768px) {
+  .nav-menu {
+    left: 0 !important;
+    transform: translateX(-100%);
+  }
+
+  .nav-menu.active {
+    transform: translateX(0);
+  }
+}
+
+/* 3️⃣ Fix 100vh issue on mobile */
+.hero {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* 4️⃣ Prevent buttons & flex items overflow */
+.hero-buttons,
+.btn {
+  max-width: 100%;
+}
+
+/* 5️⃣ Safety net for scaled images */
+.gallery-item {
+  overflow: hidden;
+}
+
