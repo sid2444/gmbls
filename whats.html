@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borewell WhatsApp Message Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #cdb7ff;
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .sidebar {
+            width: 100%;
+            background: #0f172a;
+            color: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-toggle {
+            background: #c7f000;
+            color: black;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-size: 18px;
+            cursor: pointer;
+            display: block;
+        }
+
+        .nav {
+            display: none;
+            flex-direction: column;
+            margin-top: 15px;
+        }
+
+        .nav.active {
+            display: flex;
+        }
+
+        .nav li {
+            list-style: none;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 6px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav li i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .nav li.active,
+        .nav li:hover {
+            background: #c7f000;
+            color: black;
+        }
+
+        .download {
+            background: #c7f000;
+            color: black;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            margin-top: 15px;
+        }
+
+        .main {
+            flex: 1;
+            background: #f9f9fb;
+            border-radius: 24px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .topbar h2 {
+            color: #0f172a;
+            font-size: 20px;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .top-actions input {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            flex: 1;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #c7f000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #475569;
+            border-left: 4px solid #c7f000;
+            padding-left: 10px;
+            margin: 20px 0 15px 0;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        label {
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            height: 40px;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #c7f000;
+            box-shadow: 0 0 0 3px rgba(199, 240, 0, .25);
+        }
+
+        input[readonly] {
+            background: #f1f5f9;
+            font-weight: 700;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 26px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+        }
+
+        .btn-preview {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-preview:hover {
+            background: #5a67d8;
+        }
+
+        .btn-clear {
+            background: #e5e7eb;
+        }
+
+        .btn-clear:hover {
+            background: #d1d5db;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 25px;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: #0f172a;
+            font-size: 20px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .template-preview {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+            font-size: 14px;
+            white-space: pre-line;
+            line-height: 1.6;
+            font-family: 'Courier New', monospace;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-actions button {
+            width: auto;
+            padding: 10px 20px;
+        }
+
+        .btn-copy {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            background: #7c3aed;
+        }
+
+        /* Alert */
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            display: none;
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+            background: #10b981;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .alert.error {
+            background: #dc2626;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        *::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Tablet styles */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .app {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .topbar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .top-actions {
+                width: auto;
+            }
+
+            .top-actions input {
+                width: 200px;
+            }
+
+            .form-row {
+                flex-direction: row;
+                gap: 20px;
+            }
+
+            .form-group {
+                min-width: 200px;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .actions {
+                flex-direction: row;
+            }
+
+            button {
+                width: auto;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            .nav {
+                display: flex !important;
+            }
+
+            .download {
+                display: block;
+            }
+        }
+
+        /* Desktop styles */
+        @media (min-width: 1024px) {
+            .app {
+                display: flex;
+                flex-direction: row;
+                height: 100vh;
+                padding: 20px;
+            }
+
+            .sidebar {
+                width: 230px;
+                margin-bottom: 0;
+                margin-right: 20px;
+            }
+
+            .logo {
+                font-size: 22px;
+                font-weight: 700;
+                display: block;
+            }
+
+            .nav {
+                display: flex !important;
+                flex-direction: column;
+                margin-top: 0;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            .download {
+                display: block;
+                margin-top: 0;
+            }
+
+            .main {
+                flex: 1;
+                margin-left: 0;
+                background: #f9f9fb;
+                border-radius: 24px;
+                padding: 25px;
+                overflow-y: auto;
+            }
+
+            .topbar {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 25px;
+                padding-bottom: 15px;
+                border-bottom: 2px solid #e2e8f0;
+                gap: 0;
+            }
+
+            .topbar h2 {
+                color: #0f172a;
+                font-size: 24px;
+            }
+
+            .top-actions {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                width: auto;
+            }
+
+            .top-actions input {
+                padding: 8px 15px;
+                border-radius: 20px;
+                border: 1px solid #ddd;
+                width: 200px;
+            }
+
+            .form-container {
+                background: white;
+                padding: 28px;
+                border-radius: 18px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+            }
+
+            .section-title {
+                font-size: 16px;
+                font-weight: 600;
+                color: #475569;
+                border-left: 4px solid #c7f000;
+                padding-left: 10px;
+                margin-bottom: 20px;
+            }
+
+            .form-row {
+                display: flex;
+                flex-direction: row;
+                gap: 24px;
+                margin-bottom: 18px;
+                flex-wrap: wrap;
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                min-width: 200px;
+                width: auto;
+            }
+
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 20px;
+            }
+
+            .actions {
+                margin-top: 30px;
+                display: flex;
+                flex-direction: row;
+                gap: 15px;
+            }
+
+            button {
+                padding: 12px 26px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 600;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            Ganeshmani
+            <section class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </section>
+        </div>
+
+        <ul class="nav" id="navMenu">
+            <li id="dashboard"><i class="fas fa-grid"></i> Dashboard</li>
+            <li id="customer" class="active"><i class="fas fa-whatsapp"></i> Send Booking Details</li>
+            <li id="records"><i class="fas fa-users"></i> All Customers</li>
+            <li id="ledger"><i class="fa-solid fa-list"></i> Payment Ledger</li>
+            <li><i class="fas fa-bell"></i> Notifications</li>
+            <li><i class="fas fa-calendar"></i> Calendar</li>
+            <li><i class="fas fa-gear"></i> Settings</li>
+        </ul>
+
+        <div class="download">
+            <i class="fa fa-download"></i>
+            <p>Download our<br>mobile app</p>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <div class="topbar">
+            <h2>Send Booking Details via WhatsApp</h2>
+        </div>
+
+        <div class="form-container">
+            <!-- CUSTOMER DETAILS -->
+            <div class="section-title">Customer Details</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Customer Name *</label>
+                    <input type="text" id="customer_name" placeholder="Enter customer full name">
+                </div>
+                <div class="form-group">
+                    <label>Contact Number *</label>
+                    <input type="tel" id="contactno" placeholder="Enter 10-digit mobile number">
+                </div>
+                <div class="form-group" style="flex:1">
+                    <label>Village *</label>
+                    <input type="text" id="village" placeholder="Enter village name">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Booking Date</label>
+                    <input type="date" id="booking_date">
+                </div>
+                <div class="form-group">
+                    <label>Booking Time</label>
+                    <input type="time" id="booking_time">
+                </div>
+            </div>
+
+            <!-- DRILLING RATES -->
+            <div class="section-title">Drilling Rates</div>
+            <div class="grid">
+                <div class="form-group">
+                    <label>6.5 Inch Base Rate (₹/ft)</label>
+                    <input type="number" id="rate_65_base" value="300">
+                </div>
+                <div class="form-group">
+                    <label>6.5 Inch Depth Slab</label>
+                    <input type="text" id="rate_65_slab" value="Up to 300ft" placeholder="e.g., Up to 300ft">
+                </div>
+                <div class="form-group">
+                    <label>8.5 Inch Base Rate (₹/ft)</label>
+                    <input type="number" id="rate_85_base" value="400">
+                </div>
+                <div class="form-group">
+                    <label>8.5 Inch Depth Slab</label>
+                    <input type="text" id="rate_85_slab" value="Up to 400ft" placeholder="e.g., Up to 400ft">
+                </div>
+            </div>
+
+            <!-- PVC PIPE DETAILS -->
+            <div class="section-title">PVC Pipe Details (7 Inch)</div>
+            <div class="grid">
+                <div class="form-group">
+                    <label>6 KG Pipe Rate (₹)</label>
+                    <input type="number" id="pvc_6kg_7inch" value="450">
+                </div>
+                <div class="form-group">
+                    <label>8 KG Pipe Rate (₹)</label>
+                    <input type="number" id="pvc_8kg_7inch" value="550">
+                </div>
+                <div class="form-group">
+                    <label>10 KG Pipe Rate (₹)</label>
+                    <input type="number" id="pvc_10kg_7inch" value="650">
+                </div>
+            </div>
+
+            <!-- WORK CHARGES -->
+            <div class="section-title">Work Charges</div>
+            <div class="grid">
+                <div class="form-group">
+                    <label>7 Inch PVC Fitting (₹)</label>
+                    <input type="number" id="fitting_7inch" value="1200">
+                </div>
+                <div class="form-group">
+                    <label>8.5 Inch PVC Fitting (₹)</label>
+                    <input type="number" id="fitting_85inch" value="1500">
+                </div>
+                <div class="form-group">
+                    <label>8.5 Inch Drilling (₹)</label>
+                    <input type="number" id="drilling_85" value="2000">
+                </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="actions">
+                <button class="btn-whatsapp" onclick="generateAndSendWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> Generate & Send WhatsApp
+                </button>
+                <button class="btn-preview" onclick="previewTemplate()">
+                    <i class="fas fa-eye"></i> Preview Message
+                </button>
+                <button class="btn-clear" onclick="clearForm()">
+                    <i class="fas fa-eraser"></i> Clear Form
+                </button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Preview Modal -->
+<div id="previewModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>WhatsApp Message Preview</h3>
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="template-preview" id="templateContent">
+            <!-- Template will be inserted here -->
+        </div>
+        <div class="modal-actions">
+            <button class="btn-copy" onclick="copyToClipboard()">
+                <i class="far fa-copy"></i> Copy Text
+            </button>
+            <button class="btn-whatsapp" onclick="sendWhatsApp()">
+                <i class="fab fa-whatsapp"></i> Open WhatsApp
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Alert -->
+<div id="successAlert" class="alert" style="display: none;">
+    <i class="fas fa-check-circle"></i>
+    <span id="alertMessage">Message copied to clipboard!</span>
+</div>
+
+<script>
+    // DOM Elements
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+    const previewModal = document.getElementById('previewModal');
+    const templateContent = document.getElementById('templateContent');
+    const successAlert = document.getElementById('successAlert');
+    const alertMessage = document.getElementById('alertMessage');
+
+    // Initialize dates and times
+    document.getElementById('booking_date').valueAsDate = new Date();
+    
+    // Set time to next hour
+    const now = new Date();
+    now.setHours(now.getHours() + 1);
+    document.getElementById('booking_time').value = now.getHours().toString().padStart(2, '0') + ':00';
+
+    // Menu Toggle
+    menuToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+
+    // Navigation
+    document.querySelectorAll('.nav li').forEach(item => {
+        item.addEventListener('click', function() {
+            document.querySelectorAll('.nav li').forEach(li => li.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    function generateTemplate() {
+        // Get all form values
+        const customerName = document.getElementById('customer_name').value || '__________';
+        const contactNo = document.getElementById('contactno').value || '__________';
+        const village = document.getElementById('village').value || '__________';
+        const bookingDate = document.getElementById('booking_date').value;
+        const bookingTime = document.getElementById('booking_time').value;
+        const rate65Base = document.getElementById('rate_65_base').value || '300';
+        const rate65Slab = document.getElementById('rate_65_slab').value || 'Up to 300ft';
+        const rate85Base = document.getElementById('rate_85_base').value || '400';
+        const rate85Slab = document.getElementById('rate_85_slab').value || 'Up to 400ft';
+        const pvc6kg = document.getElementById('pvc_6kg_7inch').value || '450';
+        const pvc8kg = document.getElementById('pvc_8kg_7inch').value || '550';
+        const pvc10kg = document.getElementById('pvc_10kg_7inch').value || '650';
+        const fitting7inch = document.getElementById('fitting_7inch').value || '1200';
+        const fitting85inch = document.getElementById('fitting_85inch').value || '1500';
+        const drilling85 = document.getElementById('drilling_85').value || '2000';
+
+        // Format date
+        let formattedDate = '__________';
+        if (bookingDate) {
+            const date = new Date(bookingDate);
+            formattedDate = date.toLocaleDateString('en-IN', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        // Format time
+        let formattedTime = '__________';
+        if (bookingTime) {
+            const [hours, minutes] = bookingTime.split(':');
+            let hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            hour = hour % 12 || 12;
+            formattedTime = `${hour}:${minutes} ${ampm}`;
+        }
+
+        // Generate the template
+        const template = `Borewell Booking & Drilling Details
+
+
+
+ Ganeshmani Borewells Services
+📍 Miri Road, Shevgaon, Dist. Ahmednagar
+📞 9921432444 / 9623441444 / 9604441401
+
+🧾 Booking Details
+• Customer Name: ${customerName}
+• Booking Date: ${formattedDate}
+• Time: ${formattedTime}
+• Village: ${village}
+
+🛠️ Drilling Details
+
+🔹 6.5 Inch Drilling Rate
+• Base Rate (₹/ft): ₹${rate65Base}
+• Depth Slab Applied: ${rate65Slab}
+
+🔹 8.5 Inch Drilling Rate
+• Base Rate (₹/ft): ₹${rate85Base}
+• Depth Slab Applied: ${rate85Slab}
+
+📌 Rate Rule:
+• After ₹300 & ₹400 → +₹5 per foot
+• After ₹500 → +₹10 per foot
+
+🧱 PVC Pipe Details (7 Inch)
+• 6 KG Pipe Rate: ₹${pvc6kg}
+• 8 KG Pipe Rate: ₹${pvc8kg}
+• 10 KG Pipe Rate: ₹${pvc10kg}
+
+🔧 Fitting & Drilling Work
+• 7 Inch PVC Fitting: ₹${fitting7inch}
+• 8.5 Inch PVC Fitting: ₹${fitting85inch}
+• 8.5 Inch Drilling Charges: ₹${drilling85}
+
+🙏 Thank you for choosing Shri Ganeshmani Borewells Services
+📞 For booking & support, feel free to contact us anytime `;
+
+        return template;
+    }
+
+    function previewTemplate() {
+        const template = generateTemplate();
+        templateContent.textContent = template;
+        previewModal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        previewModal.style.display = 'none';
+    }
+
+    function copyToClipboard() {
+        const text = templateContent.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            showAlert('Message copied to clipboard!');
+        });
+    }
+
+    function generateAndSendWhatsApp() {
+        // Validate required fields
+        const customerName = document.getElementById('customer_name').value;
+        const contactNo = document.getElementById('contactno').value;
+        const village = document.getElementById('village').value;
+
+        if (!customerName || !contactNo || !village) {
+            showAlert('Please fill all required fields!', true);
+            return;
+        }
+
+        if (!/^\d{10}$/.test(contactNo)) {
+            showAlert('Please enter a valid 10-digit contact number!', true);
+            return;
+        }
+
+        // Generate template
+        const template = generateTemplate();
+        const encodedText = encodeURIComponent(template);
+        
+        // Open WhatsApp
+        window.open(`https://wa.me/91${contactNo}?text=${encodedText}`, '_blank');
+    }
+
+    function sendWhatsApp() {
+        const template = templateContent.textContent;
+        const contactNo = document.getElementById('contactno').value;
+        const encodedText = encodeURIComponent(template);
+        
+        if (contactNo && /^\d{10}$/.test(contactNo)) {
+            window.open(`https://wa.me/91${contactNo}?text=${encodedText}`, '_blank');
+        } else {
+            window.open(`https://web.whatsapp.com/send?text=${encodedText}`, '_blank');
+        }
+    }
+
+    function clearForm() {
+        // Clear all inputs
+        document.querySelectorAll('input').forEach(input => {
+            if (input.type !== 'button') {
+                if (input.id === 'rate_65_base') input.value = '300';
+                else if (input.id === 'rate_85_base') input.value = '400';
+                else if (input.id === 'pvc_6kg_7inch') input.value = '450';
+                else if (input.id === 'pvc_8kg_7inch') input.value = '550';
+                else if (input.id === 'pvc_10kg_7inch') input.value = '650';
+                else if (input.id === 'fitting_7inch') input.value = '1200';
+                else if (input.id === 'fitting_85inch') input.value = '1500';
+                else if (input.id === 'drilling_85') input.value = '2000';
+                else if (input.id === 'rate_65_slab') input.value = 'Up to 300ft';
+                else if (input.id === 'rate_85_slab') input.value = 'Up to 400ft';
+                else input.value = '';
+            }
+        });
+        
+        // Reset dates
+        document.getElementById('booking_date').valueAsDate = new Date();
+        
+        const now = new Date();
+        now.setHours(now.getHours() + 1);
+        document.getElementById('booking_time').value = now.getHours().toString().padStart(2, '0') + ':00';
+        
+        showAlert('Form cleared successfully!');
+    }
+
+    function showAlert(message, isError = false) {
+        alertMessage.textContent = message;
+        successAlert.className = isError ? 'alert error' : 'alert';
+        successAlert.style.display = 'block';
+        
+        setTimeout(() => {
+            successAlert.style.display = 'none';
+        }, 3000);
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        if (event.target === previewModal) {
+            closeModal();
+        }
+    }
+</script>
+</body>
+</html>
