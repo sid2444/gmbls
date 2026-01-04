@@ -630,21 +630,19 @@
             <div class="section-title">Drilling Rates</div>
             <div class="grid">
                 <div class="form-group">
-                    <label>6.5 Inch Base Rate (₹/ft)</label>
-                    <input type="number" id="rate_65_base" value="300">
+                    <label>4.5 Inch Base Rate (₹/ft)</label>
+                    <input type="number" id="rate_45_base" value="70">
                 </div>
                 <div class="form-group">
-                    <label>6.5 Inch Depth Slab</label>
-                    <input type="text" id="rate_65_slab" value="Up to 300ft" placeholder="e.g., Up to 300ft">
+                    <label>6.5 Inch Base Rate (₹/ft)</label>
+                    <input type="number" id="rate_65_base" value="70">
                 </div>
+                
                 <div class="form-group">
                     <label>8.5 Inch Base Rate (₹/ft)</label>
-                    <input type="number" id="rate_85_base" value="400">
+                    <input type="number" id="rate_85_base" value="220">
                 </div>
-                <div class="form-group">
-                    <label>8.5 Inch Depth Slab</label>
-                    <input type="text" id="rate_85_slab" value="Up to 400ft" placeholder="e.g., Up to 400ft">
-                </div>
+                
             </div>
 
             <!-- PVC PIPE DETAILS -->
@@ -652,15 +650,15 @@
             <div class="grid">
                 <div class="form-group">
                     <label>6 KG Pipe Rate (₹)</label>
-                    <input type="number" id="pvc_6kg_7inch" value="450">
+                    <input type="number" id="pvc_6kg_7inch" value="150">
                 </div>
                 <div class="form-group">
                     <label>8 KG Pipe Rate (₹)</label>
-                    <input type="number" id="pvc_8kg_7inch" value="550">
+                    <input type="number" id="pvc_8kg_7inch" value="200">
                 </div>
                 <div class="form-group">
                     <label>10 KG Pipe Rate (₹)</label>
-                    <input type="number" id="pvc_10kg_7inch" value="650">
+                    <input type="number" id="pvc_10kg_7inch" value="250">
                 </div>
             </div>
 
@@ -668,16 +666,16 @@
             <div class="section-title">Work Charges</div>
             <div class="grid">
                 <div class="form-group">
-                    <label>7 Inch PVC Fitting (₹)</label>
-                    <input type="number" id="fitting_7inch" value="1200">
+                    <label>6kg (7 Inch) PVC pipe with 8.5 Inch Drilling (₹)</label>
+                    <input type="number" id="drilling_85" value="370">
                 </div>
                 <div class="form-group">
-                    <label>8.5 Inch PVC Fitting (₹)</label>
-                    <input type="number" id="fitting_85inch" value="1500">
+                    <label>8kg (7 Inch) PVC pipe with 8.5 Inch Drilling (₹)</label>
+                    <input type="number" id="drilling_885" value="420">
                 </div>
                 <div class="form-group">
-                    <label>8.5 Inch Drilling (₹)</label>
-                    <input type="number" id="drilling_85" value="2000">
+                    <label>10kg (7 Inch) PVC pipe with 8.5 Inch Drilling (₹)</label>
+                    <input type="number" id="drilling_1085" value="470">
                 </div>
             </div>
 
@@ -761,16 +759,15 @@
         const village = document.getElementById('village').value || '__________';
         const bookingDate = document.getElementById('booking_date').value;
         const bookingTime = document.getElementById('booking_time').value;
+        const rate45Base = document.getElementById('rate_45_base').value || '300';
         const rate65Base = document.getElementById('rate_65_base').value || '300';
-        const rate65Slab = document.getElementById('rate_65_slab').value || 'Up to 300ft';
         const rate85Base = document.getElementById('rate_85_base').value || '400';
-        const rate85Slab = document.getElementById('rate_85_slab').value || 'Up to 400ft';
         const pvc6kg = document.getElementById('pvc_6kg_7inch').value || '450';
         const pvc8kg = document.getElementById('pvc_8kg_7inch').value || '550';
         const pvc10kg = document.getElementById('pvc_10kg_7inch').value || '650';
-        const fitting7inch = document.getElementById('fitting_7inch').value || '1200';
-        const fitting85inch = document.getElementById('fitting_85inch').value || '1500';
         const drilling85 = document.getElementById('drilling_85').value || '2000';
+        const drilling885 = document.getElementById('drilling_885').value || '2000';
+        const drilling1085 = document.getElementById('drilling_1085').value || '2000';
 
         // Format date
         let formattedDate = '__________';
@@ -810,13 +807,16 @@
 
 🛠️ Drilling Details
 
+🔹 4.5 Inch Drilling Rate
+• Base Rate (₹/ft): ₹${rate45Base}
+
 🔹 6.5 Inch Drilling Rate
 • Base Rate (₹/ft): ₹${rate65Base}
-• Depth Slab Applied: ${rate65Slab}
+
 
 🔹 8.5 Inch Drilling Rate
 • Base Rate (₹/ft): ₹${rate85Base}
-• Depth Slab Applied: ${rate85Slab}
+
 
 📌 Rate Rule:
 • After ₹300 & ₹400 → +₹5 per foot
@@ -828,9 +828,11 @@
 • 10 KG Pipe Rate: ₹${pvc10kg}
 
 🔧 Fitting & Drilling Work
-• 7 Inch PVC Fitting: ₹${fitting7inch}
-• 8.5 Inch PVC Fitting: ₹${fitting85inch}
-• 8.5 Inch Drilling Charges: ₹${drilling85}
+
+• 6kg (7 Inch) PVC Pipe with 8.5 Inch Drilling Charges: ₹${drilling85}
+• 8kg (7 Inch) PVC Pipe with 8.5 Inch Drilling Charges: ₹${drilling885}
+• 10kg (7 Inch) PVC Pipe with 8.5 Inch Drilling Charges: ₹${drilling1085}
+
 
 🙏 Thank you for choosing Shri Ganeshmani Borewells Services
 📞 For booking & support, feel free to contact us anytime `;
