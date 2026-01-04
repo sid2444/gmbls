@@ -428,6 +428,9 @@
             font-weight: 600;
             flex: 1;
         }
+        .searchbar{
+            width:80px;
+        }
 
         /* Responsive */
         @media (min-width: 768px) {
@@ -580,7 +583,7 @@
             <div class="section-title">
                 <h3>Customer Records with Payment Ledger</h3>
                 <div class="top-actions">
-                <input type="text" id="searchInput" placeholder="Search customers...">
+                <input type="text" class="searchbar" id="searchInput" placeholder="Search customers...">
             </div>
                 <button class="add-btn" onclick="openAddModal()">
                     <i class="fas fa-plus"></i> Add New Customer
